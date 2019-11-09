@@ -10,9 +10,6 @@
         "cordova-plugin-battery-status": {
             "PACKAGE_NAME": "com.phonegap.chargingchecker"
         },
-        "cordova-plugin-nativeaudio": {
-            "PACKAGE_NAME": "com.phonegap.chargingchecker"
-        },
         "nl.x-services.plugins.insomnia": {
             "PACKAGE_NAME": "com.phonegap.chargingchecker"
         },
@@ -21,6 +18,12 @@
         }
     },
     "dependent_plugins": {
+        "cordova-plugin-file": {
+            "PACKAGE_NAME": "com.phonegap.chargingchecker"
+        },
+        "cordova-plugin-media": {
+            "PACKAGE_NAME": "com.phonegap.chargingchecker"
+        },
         "es6-promise-plugin": {
             "PACKAGE_NAME": "com.phonegap.chargingchecker"
         }
