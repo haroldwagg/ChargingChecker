@@ -43,14 +43,14 @@
           <p id="settingsP">
             Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="10" step="5" class="slider" id="delayRange" oninput="displayDelayTime(this.value)">&nbsp;&nbsp; <span id="delayMsg">10 mins</span>
             <br />
-            <select id="manualChimes" onChange="">
+            <select id="manualChimes" onChange="manualDing(this)">
               <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
-              <option value="hi">Play HIGH Chime (Charging/Charged)</option>
-              <option value="middle">Play MIDDLE Chime (No Change)</option>
-              <option value="lo">Play LOW Chime (Discharging/Disconnected)</option>
+              <option value="upper">Play HIGH Chime (Charging/Charged)</option>
+              <option value="nochange">Play MIDDLE Chime (No Change)</option>
+              <option value="downer">Play LOW Chime (Discharging/Disconnected)</option>
             </select>
             <br />
-              Volume: &nbsp;&nbsp;<input type="range" min="0" max="100" value="40" class="slider" id="volumeRange">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" /> Speak %
+              Volume: &nbsp;&nbsp;<input type="range" min="0" max="10" value="6" class="slider" id="volumeRange">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" /> Speak %
           </p>
         </div>
 
@@ -152,7 +152,7 @@ body {
 
   #manualChimes {
     margin-top: 12px;
-    font-size: 0.8em;
+    font-size: 0.9em;
   }
 
   #volumeRange {
@@ -190,12 +190,12 @@ body {
           var UP_DING = "audio/UpBeep.mp3";
           var DOWN_DING = "audio/DownBeep.mp3";
           var NC_DING = "audio/NoChangeBeep.mp3";
-          var DING_DELAY = 150000;
+          var DING_DELAY = 300000;
 
           var CHARGER_CONNECTED = "chargedACTIVE.png";
           var CHARGER_DISCONNECTED = "nochargingACTIVE.png";
 
-          var CURRENT_VOLUME = 0.4;
+          var CURRENT_VOLUME = 0.6;
 
           var html = "";
           var mainLooper, dingLooper;
@@ -207,6 +207,7 @@ body {
           this.root = p.substring(0, p.lastIndexOf('/')) + "/";
 
           document.addEventListener("deviceready", starter, false);
+          document.addEventListener("orientationchange", onOChange, false);
 
           function starter()   {
             getScreenSize();
@@ -216,7 +217,16 @@ body {
             window.plugins.insomnia.keepAwake();
 
             navigator.getBattery().then(function(battery) {
+              BAT_LEVEL = Math.round(battery.level * 100);
+              PLUGGED_STATUS = battery.charging;
+
               battery.onchargingchange = function() {
+                if (PLUGGED_STATUS)   {
+                  doDing('downer');
+                }
+                else   {
+                  doDing('upper');
+                }
                 clearTimeout(mainLooper);
                 doMainLoop();
               };
@@ -226,6 +236,7 @@ body {
               };
             });
 
+            window.setTimeout(dingTimer, 2000);
             doMainLoop();
           }
 
@@ -281,45 +292,23 @@ body {
           //        alert("DEVICE_TYPE is " + DEVICE_TYPE);
                 }
 
-            function onBatteryStatus(status)   {
-              BAT_LEVEL = status.level;
-//              alert(status.level + " - " + BAT_LEVEL); return;
-//              document.getElementById("bigTemp").innerHTML = BAT_LEVEL + "%";
-
-//              if (BAT_LEVEL > PREV_BAT_LEVEL)   {
-//                INDICATOR = "-- UP -->";
-//                doDing('upper');
-//              }
-//              else if (BAT_LEVEL < PREV_BAT_LEVEL)   {
-//                INDICATOR = "<-- DOWN ";
-//                doDing('downer');
-//              }
-//              else   {
-//                INDICATOR = "-- NONE -";
-//                doDing('nochange');
-//              }
-
-              PREV_BAT_LEVEL = BAT_LEVEL;
-
-            }
 
           function dingTimer()   {
-              if (BAT_LEVEL > PREV_BAT_LEVEL)   {
-                INDICATOR = "-- UP -->";
-                doDing('upper');
-              }
-              else if (BAT_LEVEL < PREV_BAT_LEVEL)   {
-                INDICATOR = "<-- DOWN ";
-                doDing('downer');
-              }
-              else   {
-                INDICATOR = "-- NONE -";
-                doDing('nochange');
-              }
+            if (! PLUGGED_STATUS)   {
+              doDing('downer');
+            }
+            else if ((BAT_LEVEL > PREV_BAT_LEVEL) || (PREV_BAT_LEVEL == 0))   {
+              doDing('upper');
+            }
+            else if (BAT_LEVEL < PREV_BAT_LEVEL)   {
+              doDing('downer');
+            }
+            else   {
+              doDing('nochange');
+            }
 
-              PREV_BAT_LEVEL = BAT_LEVEL;
-              dingLooper = window.setTimeout(dingTimer, DING_DELAY);
-
+            PREV_BAT_LEVEL = BAT_LEVEL;
+            dingLooper = window.setTimeout(dingTimer, DING_DELAY);
           }
 
           function doDing(dir)   {
@@ -355,12 +344,21 @@ body {
             ;
           }
 
+          function manualDing(sel)   {
+            doDing(sel.options[sel.selectedIndex].value);
+          }
+
+
           function displayDelayTime(theValue)   {
             if (theValue == 0)   {
-              document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;";
+              document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+              clearTimeout(dingLooper);
             }
             else   {
               document.getElementById('delayMsg').innerHTML = theValue + " mins";
+              DING_DELAY = theValue * 60 * 1000;
+              clearTimeout(dingLooper);
+              dingTimer();
             }
           }
 
