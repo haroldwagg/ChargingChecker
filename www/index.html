@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+        <link rel="stylesheet" type="text/css" href="index.css" />
+        <title>Blank App</title>
+    </head>
+    <body>
+        <div id="logoDiv">
+          <img src="CC_Logo.png" width="180" height="70" id="logoImg" />
+        </div>
+        <div id="tableContainer">
+          <table id="mainTable">
+            <tr>
+              <td id="percentPanel" align="right">
+                <p id="percentParagraph">
+
+                </p>
+
+              </td>
+              <td id="percentSignPanel">
+                %
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="center" height="45">
+                <img src="BG1.png" id="theGraph" />
+
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="center">
+                <img src="nochargingINACTIVE.png" id="chargingIndicator" />
+              </td>
+            </tr>
+
+
+          </table>
+        </div>
+        <div id="settingsDiv">
+          <hr width="100%" style="margin-bottom: 10px;" />
+          <p id="settingsP">
+            Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="10" step="5" class="slider" id="delayRange" oninput="displayDelayTime(this.value)">&nbsp;&nbsp; <span id="delayMsg">10 mins</span>
+            <br />
+            <select id="manualChimes" onChange="">
+              <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
+              <option value="hi">Play HIGH Chime (Charging/Charged)</option>
+              <option value="middle">Play MIDDLE Chime (No Change)</option>
+              <option value="lo">Play LOW Chime (Discharging/Disconnected)</option>
+            </select>
+            <br />
+              Volume: &nbsp;&nbsp;<input type="range" min="0" max="100" value="40" class="slider" id="volumeRange">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" /> Speak %
+          </p>
+        </div>
+
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="Insomnia.js"></script>
+
+
+<style>
+* {
+  padding: 0;
+  margin: 0;
+  /* border: 1px solid green;  */
+}
+
+body {
+  font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+  font-size: 17px;
+}
+
+/* @media screen and (min-width: 780px) { */
+  #mainTable {
+
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+  }
+/*
+  #mainContainer {
+    display: relative;
+    width: 100%;
+    height: 100vh;
+    background-color: yellow;
+  }
+  */
+
+  #percentParagraph {
+    font-size: 10em;
+    color: #770077;
+    text-align: right;
+    -webkit-transform: scaleY(1.4);
+    transform: scaleY(1.4);
+    margin-top: 10px;
+    margin-left: -10px;
+    letter-spacing: -5px;
+    font-weight: normal;
+  }
+
+
+  #percentPanel {
+    width: 15%;
+
+  }
+
+  #percentSignPanel {
+    width: 10%;
+    font-size: 3.8em;
+    -webkit-transform: scaleY(1.8);
+    transform: scaleY(1.8);
+    color: #770077;
+  }
+
+/*
+  #tableContainer {
+    width: 100%;
+    background-color: #ccc;
+    height: 100%;
+    margin-top: -30px;
+  }
+*/
+
+  #theGraph {
+    width: 80%;
+    height: 25px;
+    margin-top: -10px;
+  }
+
+  #chargingIndicator {
+    width: 40%;
+    height: auto;
+    margin-left: 0px;
+    margin-top: 0px;
+  }
+
+  #settingsDiv {
+    width: 100%;
+    background-color: #ccd;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    display: relative;
+    height: 110px;
+    position: fixed;
+    bottom: 0;
+    overflow:visible;"
+  }
+
+  #settingsP {
+    text-align: center;
+  }
+
+  #manualChimes {
+    margin-top: 12px;
+    font-size: 0.8em;
+  }
+
+  #volumeRange {
+    margin-top: 12px;
+    width: 30%;
+
+  }
+
+  #speakCheck {
+    width: 25px;
+    height: 25px;
+    padding-bottom: 22px;
+  }
+/*
+  #logoDiv {
+    background-color: #ccc;
+    width: 180px;
+  }
+  */
+
+
+
+
+/* } */
+
+</style>
+
+        <script type="text/javascript">
+          var BAT_LEVEL = 0;
+          var PREV_BAT_LEVEL = 0;
+          var PLUGGED_STATUS = false;
+          var INDICATOR = "";
+          var DEVICE_TYPE, SIZE, ORIENT;
+
+          var UP_DING = "audio/UpBeep.mp3";
+          var DOWN_DING = "audio/DownBeep.mp3";
+          var NC_DING = "audio/NoChangeBeep.mp3";
+
+          var CHARGER_CONNECTED = "chargedACTIVE.png";
+          var CHARGER_DISCONNECTED = "nochargingACTIVE.png";
+
+          var CURRENT_VOLUME = 0.4;
+
+          var html = "";
+          var mainLooper;
+          var closeCharged = false;
+          var chargingIconHandle = document.getElementById("chargingIndicator");
+          var graphHandle = document.getElementById("theGraph");
+
+          var p = window.location.pathname;
+          this.root = p.substring(0, p.lastIndexOf('/')) + "/";
+
+          document.addEventListener("deviceready", starter, false);
+
+          function starter()   {
+            getScreenSize();
+            onOChange();
+//            alert(DEVICE_TYPE);
+//            doReading();
+            window.plugins.insomnia.keepAwake();
+
+            navigator.getBattery().then(function(battery) {
+              battery.onchargingchange = function() {
+                clearTimeout(mainLooper);
+                doMainLoop();
+              };
+            });
+
+            doMainLoop();
+          }
+
+            function doMainLoop()   {
+              navigator.getBattery().then(function(battery) {
+                BAT_LEVEL = Math.round(battery.level * 100);
+                PLUGGED_STATUS = battery.charging;
+
+                document.getElementById("percentParagraph").innerHTML = "" + BAT_LEVEL;
+
+                if (PLUGGED_STATUS)   {
+                  chargingIconHandle.src = CHARGER_CONNECTED;
+                }
+                else   {
+                  chargingIconHandle.src = CHARGER_DISCONNECTED;
+                }
+
+                if (BAT_LEVEL >= 96 || closeCharged)   {
+                  graphHandle.src = "BG10.png";
+                }
+                else   {
+                  var c = Math.floor(BAT_LEVEL / 10);
+                  var bgFile = "BG" + c + ".png";
+                  graphHandle.src = bgFile;
+//                  alert(bgFile);
+                }
+              });
+
+              mainLooper = window.setTimeout(doMainLoop, 60000);
+            }
+
+
+
+          //
+          //  Should be called only once in starter(). Size of the device will not change.
+          //
+                function getScreenSize()   {
+                  var ratio = window.devicePixelRatio || 1;
+                  if ((screen.height / ratio > 780) || (screen.width / ratio > 780))   {
+                    SIZE = "big";
+                  }
+                  else   {
+                    SIZE = "small";
+                  }
+          //        alert("SIZE is " + SIZE);
+                }
+
+          //  Called every time orientation changes
+          //
+                function onOChange()   {
+                  ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
+                  DEVICE_TYPE = SIZE + "-" + ORIENT;
+          //        alert("DEVICE_TYPE is " + DEVICE_TYPE);
+                }
+
+            function onBatteryStatus(status)   {
+              BAT_LEVEL = status.level;
+//              alert(status.level + " - " + BAT_LEVEL); return;
+//              document.getElementById("bigTemp").innerHTML = BAT_LEVEL + "%";
+
+//              if (BAT_LEVEL > PREV_BAT_LEVEL)   {
+//                INDICATOR = "-- UP -->";
+//                doDing('upper');
+//              }
+//              else if (BAT_LEVEL < PREV_BAT_LEVEL)   {
+//                INDICATOR = "<-- DOWN ";
+//                doDing('downer');
+//              }
+//              else   {
+//                INDICATOR = "-- NONE -";
+//                doDing('nochange');
+//              }
+
+              PREV_BAT_LEVEL = BAT_LEVEL;
+
+              PLUGGED_STATUS = (status.isPlugged ? "" : "NOT ");
+            }
+
+
+
+          function doDing(dir)   {
+            var dingFile = "";
+            var my_dinger;
+
+            if (dir == "downer")   {
+              dingFile = this.root + DOWN_DING;
+            }
+            else if (dir == "upper")   {
+              dingFile = this.root + UP_DING;
+            }
+            else if (dir == "nochange")   {
+              dingFile = this.root + NC_DING;
+            }
+
+            my_dinger = new Media(dingFile,
+                ignoreError(),
+                ignoreError()
+              );
+
+            my_dinger.play({ playAudioWhenScreenIsLocked : true });
+            my_dinger.setVolume(CURRENT_VOLUME);
+
+            var Timeouter = setTimeout(function()   {
+              my_dinger.stop();
+              my_dinger.release();
+            }, 15000);
+
+          }
+
+          function ignoreError()   {
+            ;
+          }
+
+          function triggerEvent(el, type)   {
+            if ('createEvent' in document) {
+                // modern browsers, IE9+
+                var e = document.createEvent('HTMLEvents');
+                e.initEvent(type, false, true);
+                el.dispatchEvent(e);
+            }
+          }
+
+          function displayDelayTime(theValue)   {
+            if (theValue == 0)   {
+              document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;";
+            }
+            else   {
+              document.getElementById('delayMsg').innerHTML = theValue + " mins";
+            }
+          }
+
+        </script>
+    </body>
+</html>

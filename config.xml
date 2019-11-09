@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.phonegap.chargingchecker" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Charging Checker</name>
+    <description>
+      Gives Audio Indication whether a phone/tablet is charging or not
+    </description>
+    <author email="umikeapps@outlook.com">
+      UMike Apps : Real Solutions for Real Problems
+    </author>
+    <content src="index.html" />
+    <plugin name="phonegap-plugin-battery-status" source="npm" />
+    <plugin name="cordova-plugin-media" source="npm" spec="~2.2.0" />
+    <plugin name="cordova-plugin-insomnia" version="4.1.0" source="npm" />
+    <access origin="*" />
+</widget>
