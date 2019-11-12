@@ -39,18 +39,17 @@
           </table>
         </div>
         <div id="settingsDiv">
-          <hr width="100%" style="margin-bottom: 10px;" />
           <p id="settingsP">
-            Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="10" step="5" class="slider" id="delayRange" oninput="displayDelayTime(this.value)">&nbsp;&nbsp; <span id="delayMsg">10 mins</span>
+            Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)">&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
             <br />
             <select id="manualChimes" onChange="manualDing(this)">
-              <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
-              <option value="upper">Play HIGH Chime (Charging/Charged)</option>
-              <option value="nochange">Play MIDDLE Chime (No Change)</option>
-              <option value="downer">Play LOW Chime (Discharging/Disconnected)</option>
+              <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
+              <option value="fullcharge">Play FULL CHARGE Chime</option>
+              <option value="upper">Play CHARGING Chime</option>
+              <option value="downer">Play NOT CHARGING Chime</option>
             </select>
             <br />
-              Volume: &nbsp;&nbsp;<input type="range" min="0" max="10" value="6" class="slider" id="volumeRange">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" /> Speak %
+              Volume: &nbsp;&nbsp;<input type="range" min="0" max="10" value="6" class="slider" id="volumeRange">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
           </p>
         </div>
 
@@ -140,7 +139,7 @@ body {
     padding-top: 12px;
     padding-bottom: 12px;
     display: relative;
-    height: 110px;
+    height: 90px;
     position: fixed;
     bottom: 0;
     overflow:visible;"
@@ -190,7 +189,12 @@ body {
           var UP_DING = "audio/UpBeep.mp3";
           var DOWN_DING = "audio/DownBeep.mp3";
           var NC_DING = "audio/NoChangeBeep.mp3";
+          var CHARGED_DING = "audio/FullCharge.mp3";
+          var COUNTDOWN_FILE = "audio/countdown.mp3";
           var DING_DELAY = 300000;
+          var SPEAK_PERCENT = false;
+          var MEDIA_READY = false;
+          var my_percent_dinger = "undefined";
 
           var CHARGER_CONNECTED = "chargedACTIVE.png";
           var CHARGER_DISCONNECTED = "nochargingACTIVE.png";
@@ -202,18 +206,19 @@ body {
           var closeCharged = false;
           var chargingIconHandle = document.getElementById("chargingIndicator");
           var graphHandle = document.getElementById("theGraph");
+          var settingsDivHandle = document.getElementById("settingsDiv");
 
           var p = window.location.pathname;
           this.root = p.substring(0, p.lastIndexOf('/')) + "/";
+          var percentDingFile = this.root + COUNTDOWN_FILE;
 
           document.addEventListener("deviceready", starter, false);
-          document.addEventListener("orientationchange", onOChange, false);
+          window.addEventListener("orientationchange", onOChange, true);
 
           function starter()   {
             getScreenSize();
             onOChange();
-//            alert(DEVICE_TYPE);
-//            doReading();
+
             window.plugins.insomnia.keepAwake();
 
             navigator.getBattery().then(function(battery) {
@@ -229,6 +234,8 @@ body {
                 }
                 clearTimeout(mainLooper);
                 doMainLoop();
+                clearTimeout(dingLooper);
+                dingTimer();
               };
               battery.onlevelchange = function() {
                 clearTimeout(mainLooper);
@@ -290,21 +297,35 @@ body {
                   ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
                   DEVICE_TYPE = SIZE + "-" + ORIENT;
           //        alert("DEVICE_TYPE is " + DEVICE_TYPE);
+                  if (DEVICE_TYPE == "small-landscape")   {
+                    document.getElementById('tableContainer').style.marginLeft = "-150px";
+                    settingsDivHandle.style.top = "0";
+                    settingsDivHandle.style.width = "50%";
+                    settingsDivHandle.style.right = "0";
+                    settingsDivHandle.style.fontSize = "0.9em";
+                  }
+
+
                 }
 
 
-          function dingTimer()   {
-            if (! PLUGGED_STATUS)   {
-              doDing('downer');
-            }
-            else if ((BAT_LEVEL > PREV_BAT_LEVEL) || (PREV_BAT_LEVEL == 0))   {
-              doDing('upper');
-            }
-            else if (BAT_LEVEL < PREV_BAT_LEVEL)   {
-              doDing('downer');
-            }
-            else   {
-              doDing('nochange');
+          function dingTimer(none)   {
+            if (none != "none")   {
+              if (! PLUGGED_STATUS)   {
+                doDing('downer');
+              }
+              else if (BAT_LEVEL == 100 || closeCharged)   {
+                doDing('fullcharge');
+              }
+              else if ((BAT_LEVEL > PREV_BAT_LEVEL) || (PREV_BAT_LEVEL == 0))   {
+                doDing('upper');
+              }
+              else if (BAT_LEVEL < PREV_BAT_LEVEL)   {
+                doDing('downer');
+              }
+              else   {
+                doDing('nochange');
+              }
             }
 
             PREV_BAT_LEVEL = BAT_LEVEL;
@@ -315,6 +336,10 @@ body {
             var dingFile = "";
             var my_dinger;
 
+            if (SPEAK_PERCENT)   {
+              var Percenter = setTimeout(talkPercent, 1000);
+            }
+
             if (dir == "downer")   {
               dingFile = this.root + DOWN_DING;
             }
@@ -323,6 +348,9 @@ body {
             }
             else if (dir == "nochange")   {
               dingFile = this.root + NC_DING;
+            }
+            else if (dir == "fullcharge")   {
+              dingFile = this.root + CHARGED_DING;
             }
 
             my_dinger = new Media(dingFile,
@@ -340,6 +368,37 @@ body {
 
           }
 
+          function talkPercent()   {
+            my_percent_dinger = new Media(percentDingFile,
+              setMediaFlag(),
+              ignoreError()
+            );
+
+            var check = function()   {
+              if (MEDIA_READY)   {
+                my_percent_dinger.seekTo(0);
+                my_percent_dinger.seekTo(BAT_LEVEL * 5 * 1000);
+                my_percent_dinger.play({ playAudioWhenScreenIsLocked : true });
+                my_percent_dinger.setVolume(CURRENT_VOLUME);
+
+                var Timeouter2 = setTimeout(function()   {
+                  my_percent_dinger.stop();
+                  my_percent_dinger.release();
+                }, 4000);
+                MEDIA_READY = false;
+              }
+              else {
+                setTimeout(check, 500); // check again in half a second
+              }
+            };
+
+            check();
+          }
+
+          function setMediaFlag()   {
+            MEDIA_READY = true;
+          }
+
           function ignoreError()   {
             ;
           }
@@ -350,16 +409,24 @@ body {
 
 
           function displayDelayTime(theValue)   {
-            if (theValue == 0)   {
+            let tempp = theValue / 18.258;
+            let tempp2 = tempp * tempp * 11.112;
+            var minuteDelay = Math.floor(tempp2);
+
+            if (minuteDelay == 0)   {
               document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
               clearTimeout(dingLooper);
             }
             else   {
-              document.getElementById('delayMsg').innerHTML = theValue + " mins";
-              DING_DELAY = theValue * 60 * 1000;
+              document.getElementById('delayMsg').innerHTML = minuteDelay + " mins";
+              DING_DELAY = minuteDelay * 60 * 1000;
               clearTimeout(dingLooper);
-              dingTimer();
+              dingTimer("none");
             }
+          }
+
+          function doSpeakPercent()   {
+            SPEAK_PERCENT = document.getElementById('speakCheck').checked ? true : false;
           }
 
         </script>
