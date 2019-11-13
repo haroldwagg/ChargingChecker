@@ -25,7 +25,7 @@
             </tr>
             <tr>
               <td colspan="2" align="center" height="45">
-                <img src="BG1.png" id="theGraph" />
+                <img src="BG1.png" id="theGraph" style="visibility: hidden" />
 
               </td>
             </tr>
@@ -43,10 +43,11 @@
             Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)">&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
             <br />
             <select id="manualChimes" onChange="manualDing(this)">
-              <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
+              <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
               <option value="fullcharge">Play FULL CHARGE Chime</option>
               <option value="upper">Play CHARGING Chime</option>
               <option value="downer">Play NOT CHARGING Chime</option>
+              <option value="nochange">Play NO CHANGE Chime</option>
             </select>
             <br />
               Volume: &nbsp;&nbsp;<input type="range" min="0" max="10" value="6" class="slider" id="volumeRange">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
@@ -142,7 +143,8 @@ body {
     height: 90px;
     position: fixed;
     bottom: 0;
-    overflow:visible;"
+    overflow:visible;
+    font-size: 0.9em;
   }
 
   #settingsP {
@@ -195,6 +197,7 @@ body {
           var SPEAK_PERCENT = false;
           var MEDIA_READY = false;
           var my_percent_dinger = "undefined";
+          var safeToDing = true;
 
           var CHARGER_CONNECTED = "chargedACTIVE.png";
           var CHARGER_DISCONNECTED = "nochargingACTIVE.png";
@@ -242,6 +245,8 @@ body {
                 doMainLoop();
               };
             });
+
+            document.getElementById('theGraph').style.visibility = "visible";
 
             window.setTimeout(dingTimer, 2000);
             doMainLoop();
@@ -302,7 +307,20 @@ body {
                     settingsDivHandle.style.top = "0";
                     settingsDivHandle.style.width = "50%";
                     settingsDivHandle.style.right = "0";
-                    settingsDivHandle.style.fontSize = "0.9em";
+                    document.getElementById('theGraph').style.width = "40%";
+                    document.getElementById('chargingIndicator').style.marginTop = "-460px";
+                    document.getElementById('chargingIndicator').style.marginLeft = "450px";
+                    document.getElementById('chargingIndicator').style.width = "25%";
+                  }
+                  else if (DEVICE_TYPE == "small-portrait")   {
+                    document.getElementById('tableContainer').style.marginLeft = "0";
+                    settingsDivHandle.style.top = "initial";
+                    settingsDivHandle.style.bottom = "0";
+                    settingsDivHandle.style.width = "100%";
+                    document.getElementById('theGraph').style.width = "80%";
+                    document.getElementById('chargingIndicator').style.marginTop = "0";
+                    document.getElementById('chargingIndicator').style.marginLeft = "0";
+                    document.getElementById('chargingIndicator').style.width = "40%";
                   }
 
 
@@ -336,35 +354,39 @@ body {
             var dingFile = "";
             var my_dinger;
 
-            if (SPEAK_PERCENT)   {
-              var Percenter = setTimeout(talkPercent, 1000);
-            }
+            if (safeToDing)   {
+              safeToDing = false;
+              if (SPEAK_PERCENT)   {
+                var Percenter = setTimeout(talkPercent, 1250);
+              }
 
-            if (dir == "downer")   {
-              dingFile = this.root + DOWN_DING;
-            }
-            else if (dir == "upper")   {
-              dingFile = this.root + UP_DING;
-            }
-            else if (dir == "nochange")   {
-              dingFile = this.root + NC_DING;
-            }
-            else if (dir == "fullcharge")   {
-              dingFile = this.root + CHARGED_DING;
-            }
+              if (dir == "downer")   {
+                dingFile = this.root + DOWN_DING;
+              }
+              else if (dir == "upper")   {
+                dingFile = this.root + UP_DING;
+              }
+              else if (dir == "nochange")   {
+                dingFile = this.root + NC_DING;
+              }
+              else if (dir == "fullcharge")   {
+                dingFile = this.root + CHARGED_DING;
+              }
 
-            my_dinger = new Media(dingFile,
-                ignoreError(),
-                ignoreError()
-              );
+              my_dinger = new Media(dingFile,
+                  ignoreError(),
+                  ignoreError()
+                );
 
-            my_dinger.play({ playAudioWhenScreenIsLocked : true });
-            my_dinger.setVolume(CURRENT_VOLUME);
+              my_dinger.play({ playAudioWhenScreenIsLocked : true });
+              my_dinger.setVolume(CURRENT_VOLUME);
 
-            var Timeouter = setTimeout(function()   {
-              my_dinger.stop();
-              my_dinger.release();
-            }, 4000);
+              var Timeouter = setTimeout(function()   {
+                my_dinger.stop();
+                my_dinger.release();
+                safeToDing = true;
+              }, 2000);
+            }
 
           }
 
