@@ -167,7 +167,7 @@ body {
           var CHARGING_FILE = "audio/Charging.mp3";
           var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3"
           var CHARGED_FILE = "audio/Charged.mp3";
-          var DING_DELAY = 300000;
+          var DING_DELAY = 240000;
           var SPEAK_PERCENT = false;
           var MEDIA_READY = false;
           var my_percent_dinger = "undefined";
@@ -387,7 +387,7 @@ body {
 
             var check = function()   {
               if (MEDIA_READY)   {
-                if (BAT_LEVEL < 100 && ! closeCharged)   {
+                if (percentDingFile == COUNTDOWN_FILE)   {
                   my_percent_dinger.seekTo(0);
                   my_percent_dinger.seekTo(BAT_LEVEL * 5 * 1000);
                 }
