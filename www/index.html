@@ -166,6 +166,7 @@ body {
           var COUNTDOWN_FILE = "audio/countwav.wav";
           var CHARGING_FILE = "audio/Charging.mp3";
           var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3"
+          var CHARGED_FILE = "audio/Charged.mp3";
           var DING_DELAY = 300000;
           var SPEAK_PERCENT = false;
           var MEDIA_READY = false;
@@ -372,6 +373,13 @@ body {
           }
 
           function talkPercent()   {
+            if (BAT_LEVEL == 100 || closeCharged)   {
+              percentDingFile = CHARGED_FILE;
+            }
+            else   {
+              percentDingFile = COUNTDOWN_FILE;
+            }
+
             my_percent_dinger = new Media(percentDingFile,
               setMediaFlag(),
               ignoreError()
@@ -379,8 +387,11 @@ body {
 
             var check = function()   {
               if (MEDIA_READY)   {
-                my_percent_dinger.seekTo(0);
-                my_percent_dinger.seekTo(BAT_LEVEL * 5 * 1000);
+                if (BAT_LEVEL < 100 && ! closeCharged)   {
+                  my_percent_dinger.seekTo(0);
+                  my_percent_dinger.seekTo(BAT_LEVEL * 5 * 1000);
+                }
+
                 my_percent_dinger.play({ playAudioWhenScreenIsLocked : true });
                 my_percent_dinger.setVolume(CURRENT_VOLUME);
 
