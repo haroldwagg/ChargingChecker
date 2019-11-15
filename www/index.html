@@ -388,7 +388,7 @@ body {
 
             var check = function()   {
               if (MEDIA_READY)   {
-                if (percentDingFile == COUNTDOWN_FILE)   {
+                if (BAT_LEVEL < 100 && ! closeCharged)   {
                   my_percent_dinger.seekTo(0);
                   my_percent_dinger.seekTo(BAT_LEVEL * 5 * 1000);
                 }
