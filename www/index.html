@@ -31,7 +31,7 @@
             </tr>
             <tr>
               <td colspan="2" align="center">
-                <img src="nochargingINACTIVE.png" id="chargingIndicator" />
+                <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: hidden" />
               </td>
             </tr>
 
@@ -165,7 +165,7 @@ body {
           var CHARGED_DING = "audio/FullCharge.mp3";
           var COUNTDOWN_FILE = "audio/countwav.wav";
           var CHARGING_FILE = "audio/Charging.mp3";
-          var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3"
+          var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3";
           var CHARGED_FILE = "audio/Charged.mp3";
           var DING_DELAY = 240000;
           var SPEAK_PERCENT = false;
@@ -222,6 +222,7 @@ body {
             });
 
             document.getElementById('theGraph').style.visibility = "visible";
+            document.getElementById('chargingIndicator').style.visibility = "visible";
 
             window.setTimeout(dingTimer, 3000);
             doMainLoop();
@@ -374,10 +375,10 @@ body {
 
           function talkPercent()   {
             if (BAT_LEVEL == 100 || closeCharged)   {
-              percentDingFile = CHARGED_FILE;
+              percentDingFile = this.root + CHARGED_FILE;
             }
             else   {
-              percentDingFile = COUNTDOWN_FILE;
+              percentDingFile = this.root + COUNTDOWN_FILE;
             }
 
             my_percent_dinger = new Media(percentDingFile,
