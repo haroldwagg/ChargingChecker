@@ -62,7 +62,6 @@
 * {
   padding: 0;
   margin: 0;
-  /* border: 1px solid green;  */
 }
 
 body {
@@ -77,14 +76,6 @@ body {
     margin-right: auto;
     width: 90%;
   }
-/*
-  #mainContainer {
-    display: relative;
-    width: 100%;
-    height: 100vh;
-    background-color: yellow;
-  }
-  */
 
   #percentParagraph {
     font-size: 10em;
@@ -111,15 +102,6 @@ body {
     transform: scaleY(1.8);
     color: #770077;
   }
-
-/*
-  #tableContainer {
-    width: 100%;
-    background-color: #ccc;
-    height: 100%;
-    margin-top: -30px;
-  }
-*/
 
   #theGraph {
     width: 80%;
@@ -167,17 +149,6 @@ body {
     height: 25px;
     padding-bottom: 22px;
   }
-/*
-  #logoDiv {
-    background-color: #ccc;
-    width: 180px;
-  }
-  */
-
-
-
-
-/* } */
 
 </style>
 
@@ -193,11 +164,14 @@ body {
           var NC_DING = "audio/NoChangeBeep.mp3";
           var CHARGED_DING = "audio/FullCharge.mp3";
           var COUNTDOWN_FILE = "audio/countwav.wav";
+          var CHARGING_FILE = "audio/Charging.mp3";
+          var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3"
           var DING_DELAY = 300000;
           var SPEAK_PERCENT = false;
           var MEDIA_READY = false;
           var my_percent_dinger = "undefined";
           var safeToDing = true;
+          var failSafe = 0;
 
           var CHARGER_CONNECTED = "chargedACTIVE.png";
           var CHARGER_DISCONNECTED = "nochargingACTIVE.png";
@@ -230,10 +204,10 @@ body {
 
               battery.onchargingchange = function() {
                 if (PLUGGED_STATUS)   {
-                  doDing('downer');
+                  doDing('disconnected', true);
                 }
                 else   {
-                  doDing('upper');
+                  doDing('charging', true);
                 }
                 clearTimeout(mainLooper);
                 doMainLoop();
@@ -248,7 +222,7 @@ body {
 
             document.getElementById('theGraph').style.visibility = "visible";
 
-            window.setTimeout(dingTimer, 2000);
+            window.setTimeout(dingTimer, 3000);
             doMainLoop();
           }
 
@@ -350,17 +324,24 @@ body {
             dingLooper = window.setTimeout(dingTimer, DING_DELAY);
           }
 
-          function doDing(dir)   {
+          function doDing(dir, noPercent)   {
             var dingFile = "";
             var my_dinger;
+            noPercent = noPercent || false;
 
             if (safeToDing)   {
               safeToDing = false;
-              if (SPEAK_PERCENT)   {
+              if (SPEAK_PERCENT && ! noPercent)   {
                 var Percenter = setTimeout(talkPercent, 1250);
               }
 
-              if (dir == "downer")   {
+              if (dir == "disconnected")   {
+                dingFile = this.root + DISCONNECTED_FILE;
+              }
+              else if (dir == "charging")   {
+                dingFile = this.root + CHARGING_FILE;
+              }
+              else if (dir == "downer")   {
                 dingFile = this.root + DOWN_DING;
               }
               else if (dir == "upper")   {
@@ -408,9 +389,12 @@ body {
                   my_percent_dinger.release();
                 }, 4000);
                 MEDIA_READY = false;
+                failSafe = 0;
               }
               else {
-                setTimeout(check, 500); // check again in half a second
+                if (++failSafe < 4)   {
+                  setTimeout(check, 500); // check again in half a second
+                }
               }
             };
 
@@ -426,9 +410,8 @@ body {
           }
 
           function manualDing(sel)   {
-            doDing(sel.options[sel.selectedIndex].value);
+            doDing(sel.options[sel.selectedIndex].value, true);
           }
-
 
           function displayDelayTime(theValue)   {
             let tempp = theValue / 18.258;
