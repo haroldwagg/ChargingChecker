@@ -182,6 +182,9 @@ body {
           var html = "";
           var mainLooper, dingLooper;
           var closeCharged = false;
+          var closeChargedCounter = 0;
+          var closeChargedTimeout;
+
           var chargingIconHandle = document.getElementById("chargingIndicator");
           var graphHandle = document.getElementById("theGraph");
           var settingsDivHandle = document.getElementById("settingsDiv");
@@ -225,6 +228,7 @@ body {
             document.getElementById('chargingIndicator').style.visibility = "visible";
 
             window.setTimeout(dingTimer, 3000);
+            closeChargedLooper();
             doMainLoop();
           }
 
@@ -444,6 +448,20 @@ body {
 
           function doSpeakPercent()   {
             SPEAK_PERCENT = document.getElementById('speakCheck').checked ? true : false;
+          }
+
+          function closeChargedLooper()   {
+            if (BAT_LEVEL < 99)   {
+              closeChargedCounter = 0;
+              closeCharged = false;
+            }
+            else   {
+              if (++closeChargedCounter > 9)   {
+                closeCharged = true;
+              }
+            }
+
+            closeChargedTimeout = window.setTimeout(closeChargedLooper, 60000);
           }
 
         </script>
