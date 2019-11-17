@@ -218,19 +218,28 @@ body {
           var closeChargedCounter = 0;
           var closeChargedTimeout;
 
-          var chargingIconHandle = document.getElementById("chargingIndicator");
-          var chargingIconHandle2 = document.getElementById("chargingIndicator2");
-          var graphHandle = document.getElementById("theGraph");
-          var graphHandle2 = document.getElementById("theGraph2");
-          var settingsDivHandle = document.getElementById("settingsDiv");
+//          var chargingIconHandle = document.getElementById("chargingIndicator");
+//          var chargingIconHandle2 = document.getElementById("chargingIndicator2");
+//          var graphHandle = document.getElementById("theGraph");
+//          var graphHandle2 = document.getElementById("theGraph2");
+//          var settingsDivHandle = document.getElementById("settingsDiv");
 
-          var p = window.location.pathname;
-          this.root = p.substring(0, p.lastIndexOf('/')) + "/";
-          var percentDingFile = this.root + COUNTDOWN_FILE;
+//          var p = window.location.pathname;
+//          this.root = p.substring(0, p.lastIndexOf('/')) + "/";
+//          var percentDingFile = this.root + COUNTDOWN_FILE;
 
           document.addEventListener("deviceready", starter, false);
-          window.addEventListener("orientationchange", onOChange, true);
+//          window.addEventListener("orientationchange", onOChange, true);
 
+          function starter()   {
+//            getScreenSize();
+
+            window.plugins.insomnia.keepAwake();
+alert(navigator.getBattery());
+}
+
+
+/*
           function starter()   {
             getScreenSize();
 
@@ -542,7 +551,7 @@ alert(navigator.getBattery());
           function adjustVolume(v)   {
             CURRENT_VOLUME = v;
           }
-
+*/
         </script>
     </body>
 </html>
