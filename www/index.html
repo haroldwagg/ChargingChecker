@@ -233,7 +233,6 @@ body {
 
           function starter()   {
             getScreenSize();
-            onOChange();
 
             window.plugins.insomnia.keepAwake();
 
@@ -259,6 +258,7 @@ body {
               };
             });
 
+            +onOChange();
             document.getElementById('theGraph').style.visibility = "visible";
             document.getElementById('theGraph2').style.visibility = "visible";
             document.getElementById('chargingIndicator').style.visibility = "visible";
@@ -353,33 +353,31 @@ body {
                     document.getElementById('mainTable2').style.display = "none";
                   }
                   else if (DEVICE_TYPE == "big-landscape")   {
-                    document.getElementById('tableContainer').style.marginLeft = "0";
-                    document.getElementById('percentParagraph2').style.marginLeft = "10%";
-                    document.getElementById('percentSignPanel2').style.marginLeft = "10%";
-                    settingsDivHandle.style.top = "0";
-                    settingsDivHandle.style.width = "50%";
-                    settingsDivHandle.style.right = "0";
-                    document.getElementById('theGraph2').style.width = "75%";
-                    document.getElementById('chargingIndicator2').style.marginTop = "10%";
-                    document.getElementById('chargingIndicator2').style.marginLeft = "0";
-                    document.getElementById('chargingIndicator2').style.width = "50%";
-                    document.getElementById('mainTable').style.display = "none";
-                    document.getElementById('mainTable2').style.display = "block";
+//                    document.getElementById('tableContainer').style.marginLeft = "0";
+//                    document.getElementById('percentParagraph2').style.marginLeft = "10%";
+//                    document.getElementById('percentSignPanel2').style.marginLeft = "10%";
+//                    settingsDivHandle.style.top = "0";
+//                    settingsDivHandle.style.width = "50%";
+//                    settingsDivHandle.style.right = "0";
+//                    document.getElementById('theGraph2').style.width = "75%";
+//                    document.getElementById('chargingIndicator2').style.marginTop = "10%";
+//                    document.getElementById('chargingIndicator2').style.marginLeft = "0";
+//                    document.getElementById('chargingIndicator2').style.width = "50%";
+//                    document.getElementById('mainTable').style.display = "none";
+//                    document.getElementById('mainTable2').style.display = "block";
                   }
                   else if (DEVICE_TYPE == "big-portrait")   {
-                    document.getElementById('tableContainer').style.marginLeft = "0";
-                    settingsDivHandle.style.top = "initial";
-                    settingsDivHandle.style.bottom = "0";
-                    settingsDivHandle.style.width = "100%";
-                    document.getElementById('theGraph').style.width = "80%";
-                    document.getElementById('chargingIndicator').style.marginTop = "0";
-                    document.getElementById('chargingIndicator').style.marginLeft = "0";
-                    document.getElementById('chargingIndicator').style.width = "40%";
-                    document.getElementById('mainTable').style.display = "block";
-                    document.getElementById('mainTable2').style.display = "none";
+//                  document.getElementById('tableContainer').style.marginLeft = "0";
+//                    settingsDivHandle.style.top = "initial";
+//                    settingsDivHandle.style.bottom = "0";
+//                    settingsDivHandle.style.width = "100%";
+//                    document.getElementById('theGraph').style.width = "80%";
+//                    document.getElementById('chargingIndicator').style.marginTop = "0";
+//                    document.getElementById('chargingIndicator').style.marginLeft = "0";
+//                    document.getElementById('chargingIndicator').style.width = "40%";
+//                    document.getElementById('mainTable').style.display = "block";
+//                    document.getElementById('mainTable2').style.display = "none";
                   }
-
-
                 }
 
 
@@ -405,6 +403,7 @@ body {
             PREV_BAT_LEVEL = BAT_LEVEL;
             dingLooper = window.setTimeout(dingTimer, DING_DELAY);
           }
+
 
           function doDing(dir, noPercent)   {
             var dingFile = "";
@@ -450,8 +449,8 @@ body {
                 safeToDing = true;
               }, 2000);
             }
-
           }
+
 
           function talkPercent()   {
             if (BAT_LEVEL == 100 || closeCharged)   {
