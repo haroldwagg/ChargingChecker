@@ -236,6 +236,9 @@ body {
 
             window.plugins.insomnia.keepAwake();
 
+            str = JSON.stringify(navigator);
+            alert(str);
+
             navigator.getBattery().then(function(battery) {
               BAT_LEVEL = Math.round(battery.level * 100);
               PLUGGED_STATUS = battery.charging;
@@ -304,81 +307,81 @@ body {
 
 
 
-          //
-          //  Should be called only once in starter(). Size of the device will not change.
-          //
-                function getScreenSize()   {
-                  var ratio = window.devicePixelRatio || 1;
-                  if ((screen.height / ratio > 780) || (screen.width / ratio > 780))   {
-                    SIZE = "big";
-                  }
-                  else   {
-                    SIZE = "small";
-                  }
-          //        alert("SIZE is " + SIZE);
-                }
+      //
+      //  Should be called only once in starter(). Size of the device will not change.
+      //
+            function getScreenSize()   {
+              var ratio = window.devicePixelRatio || 1;
+              if ((screen.height / ratio > 780) || (screen.width / ratio > 780))   {
+                SIZE = "big";
+              }
+              else   {
+                SIZE = "small";
+              }
+      //        alert("SIZE is " + SIZE);
+            }
 
-          //  Called every time orientation changes
-          //
-                function onOChange()   {
-                  ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
-                  DEVICE_TYPE = SIZE + "-" + ORIENT;
+      //  Called every time orientation changes
+      //
+            function onOChange()   {
+              ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
+              DEVICE_TYPE = SIZE + "-" + ORIENT;
 
 //                  alert("DEVICE_TYPE is " + DEVICE_TYPE);
 
-                  if (DEVICE_TYPE == "small-landscape")   {
-                    document.getElementById('tableContainer').style.marginLeft = "0";
-                    document.getElementById('percentParagraph2').style.marginLeft = "10%";
-                    document.getElementById('percentSignPanel2').style.marginLeft = "10%";
-                    settingsDivHandle.style.top = "0";
-                    settingsDivHandle.style.width = "50%";
-                    settingsDivHandle.style.right = "0";
-                    document.getElementById('theGraph2').style.width = "75%";
-                    document.getElementById('chargingIndicator2').style.marginTop = "10%";
-                    document.getElementById('chargingIndicator2').style.marginLeft = "0";
-                    document.getElementById('chargingIndicator2').style.width = "50%";
-                    document.getElementById('mainTable').style.display = "none";
-                    document.getElementById('mainTable2').style.display = "block";
-                  }
-                  else if (DEVICE_TYPE == "small-portrait")   {
-                    document.getElementById('tableContainer').style.marginLeft = "0";
-                    settingsDivHandle.style.top = "initial";
-                    settingsDivHandle.style.bottom = "0";
-                    settingsDivHandle.style.width = "100%";
-                    document.getElementById('theGraph').style.width = "80%";
-                    document.getElementById('chargingIndicator').style.marginTop = "0";
-                    document.getElementById('chargingIndicator').style.marginLeft = "0";
-                    document.getElementById('chargingIndicator').style.width = "40%";
-                    document.getElementById('mainTable').style.display = "block";
-                    document.getElementById('mainTable2').style.display = "none";
-                  }
-                  else if (DEVICE_TYPE == "big-landscape")   {
-                    document.getElementById('tableContainer').style.marginLeft = "0";
-                    document.getElementById('percentParagraph2').style.marginLeft = "10%";
-                    document.getElementById('percentSignPanel2').style.marginLeft = "10%";
-                    settingsDivHandle.style.top = "0";
-                    settingsDivHandle.style.width = "50%";
-                    settingsDivHandle.style.right = "0";
-                    document.getElementById('theGraph2').style.width = "75%";
-                    document.getElementById('chargingIndicator2').style.marginTop = "10%";
-                    document.getElementById('chargingIndicator2').style.marginLeft = "0";
-                    document.getElementById('chargingIndicator2').style.width = "50%";
-                    document.getElementById('mainTable').style.display = "none";
-                    document.getElementById('mainTable2').style.display = "block";
-                  }
-                  else if (DEVICE_TYPE == "big-portrait")   {
-                    document.getElementById('tableContainer').style.marginLeft = "0";
-                    settingsDivHandle.style.top = "initial";
-                    settingsDivHandle.style.bottom = "0";
-                    settingsDivHandle.style.width = "100%";
-                    document.getElementById('theGraph').style.width = "80%";
-                    document.getElementById('chargingIndicator').style.marginTop = "0";
-                    document.getElementById('chargingIndicator').style.marginLeft = "0";
-                    document.getElementById('chargingIndicator').style.width = "40%";
-                    document.getElementById('mainTable').style.display = "block";
-                    document.getElementById('mainTable2').style.display = "none";
-                  }
-                }
+              if (DEVICE_TYPE == "small-landscape")   {
+                document.getElementById('tableContainer').style.marginLeft = "0";
+                document.getElementById('percentParagraph2').style.marginLeft = "10%";
+                document.getElementById('percentSignPanel2').style.marginLeft = "10%";
+                settingsDivHandle.style.top = "0";
+                settingsDivHandle.style.width = "50%";
+                settingsDivHandle.style.right = "0";
+                document.getElementById('theGraph2').style.width = "75%";
+                document.getElementById('chargingIndicator2').style.marginTop = "10%";
+                document.getElementById('chargingIndicator2').style.marginLeft = "0";
+                document.getElementById('chargingIndicator2').style.width = "50%";
+                document.getElementById('mainTable').style.display = "none";
+                document.getElementById('mainTable2').style.display = "block";
+              }
+              else if (DEVICE_TYPE == "small-portrait")   {
+                document.getElementById('tableContainer').style.marginLeft = "0";
+                settingsDivHandle.style.top = "initial";
+                settingsDivHandle.style.bottom = "0";
+                settingsDivHandle.style.width = "100%";
+                document.getElementById('theGraph').style.width = "80%";
+                document.getElementById('chargingIndicator').style.marginTop = "0";
+                document.getElementById('chargingIndicator').style.marginLeft = "0";
+                document.getElementById('chargingIndicator').style.width = "40%";
+                document.getElementById('mainTable').style.display = "block";
+                document.getElementById('mainTable2').style.display = "none";
+              }
+              else if (DEVICE_TYPE == "big-landscape")   {
+                document.getElementById('tableContainer').style.marginLeft = "0";
+                document.getElementById('percentParagraph2').style.marginLeft = "10%";
+                document.getElementById('percentSignPanel2').style.marginLeft = "10%";
+                settingsDivHandle.style.top = "0";
+                settingsDivHandle.style.width = "50%";
+                settingsDivHandle.style.right = "0";
+                document.getElementById('theGraph2').style.width = "75%";
+                document.getElementById('chargingIndicator2').style.marginTop = "10%";
+                document.getElementById('chargingIndicator2').style.marginLeft = "0";
+                document.getElementById('chargingIndicator2').style.width = "50%";
+                document.getElementById('mainTable').style.display = "none";
+                document.getElementById('mainTable2').style.display = "block";
+              }
+              else if (DEVICE_TYPE == "big-portrait")   {
+                document.getElementById('tableContainer').style.marginLeft = "0";
+                settingsDivHandle.style.top = "initial";
+                settingsDivHandle.style.bottom = "0";
+                settingsDivHandle.style.width = "100%";
+                document.getElementById('theGraph').style.width = "80%";
+                document.getElementById('chargingIndicator').style.marginTop = "0";
+                document.getElementById('chargingIndicator').style.marginLeft = "0";
+                document.getElementById('chargingIndicator').style.width = "40%";
+                document.getElementById('mainTable').style.display = "block";
+                document.getElementById('mainTable2').style.display = "none";
+              }
+            }
 
 
           function dingTimer(none)   {
