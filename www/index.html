@@ -236,8 +236,8 @@ body {
 
             window.plugins.insomnia.keepAwake();
 
-            str = JSON.stringify(navigator);
-            alert(str);
+//            str = JSON.stringify(navigator);
+//            alert(str);
 
             navigator.getBattery().then(function(battery) {
               BAT_LEVEL = Math.round(battery.level * 100);
@@ -319,6 +319,9 @@ body {
                 SIZE = "small";
               }
       //        alert("SIZE is " + SIZE);
+
+              SIZE = "small";
+
             }
 
       //  Called every time orientation changes
