@@ -99,7 +99,8 @@
 
 body {
   font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-  font-size: 17px;
+   font-size: 17px;
+  /* font-size: 26px; */
 }
 
 /* @media screen and (min-width: 780px) { */
@@ -319,9 +320,6 @@ body {
                 SIZE = "small";
               }
       //        alert("SIZE is " + SIZE);
-
-              SIZE = "small";
-
             }
 
       //  Called every time orientation changes
@@ -347,6 +345,7 @@ body {
                 document.getElementById('mainTable2').style.display = "block";
               }
               else if (DEVICE_TYPE == "small-portrait")   {
+                document.body.style.fontSize = "26px";
                 document.getElementById('tableContainer').style.marginLeft = "0";
                 settingsDivHandle.style.top = "initial";
                 settingsDivHandle.style.bottom = "0";
@@ -359,6 +358,7 @@ body {
                 document.getElementById('mainTable2').style.display = "none";
               }
               else if (DEVICE_TYPE == "big-landscape")   {
+                document.body.style.fontSize = "28px";
                 document.getElementById('tableContainer').style.marginLeft = "0";
                 document.getElementById('percentParagraph2').style.marginLeft = "10%";
                 document.getElementById('percentSignPanel2').style.marginLeft = "10%";
@@ -373,12 +373,14 @@ body {
                 document.getElementById('mainTable2').style.display = "block";
               }
               else if (DEVICE_TYPE == "big-portrait")   {
+                document.body.style.fontSize = "28px";
                 document.getElementById('tableContainer').style.marginLeft = "0";
                 settingsDivHandle.style.top = "initial";
                 settingsDivHandle.style.bottom = "0";
                 settingsDivHandle.style.width = "100%";
                 document.getElementById('theGraph').style.width = "80%";
-                document.getElementById('chargingIndicator').style.marginTop = "0";
+                document.getElementById('theGraph').style.marginTop = "7%";
+                document.getElementById('chargingIndicator').style.marginTop = "10%";
                 document.getElementById('chargingIndicator').style.marginLeft = "0";
                 document.getElementById('chargingIndicator').style.width = "40%";
                 document.getElementById('mainTable').style.display = "block";
