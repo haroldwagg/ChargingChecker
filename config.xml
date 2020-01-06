@@ -8,6 +8,7 @@
       UMike Apps : Real Solutions for Real Problems
     </author>
     <content src="index.html" />
+    <icon src="icon.png" />
     <preference name="android-minSdkVersion" value="21" />
     <preference name="android-targetSdkVersion" value="28" />
 
