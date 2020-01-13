@@ -114,6 +114,20 @@ body {
     width: 90%;
   }
 
+  #helpButton {
+    margin-left: 2em;
+    height: 1.5em;
+    color: #0000aa;
+    background-color: #e0e0ff;
+  }
+
+  #helpButton2 {
+    margin-left: 0;
+    height: 1.5em;
+    color: #0000aa;
+    background-color: #e0e0ff;
+  }
+
   #percentParagraph, #percentParagraph2 {
     font-size: 10em;
     color: #770077;
@@ -351,6 +365,9 @@ body {
                 settingsDivHandle.style.width = "50%";
                 settingsDivHandle.style.right = "0";
                 document.getElementById('theGraph2').style.width = "75%";
+
+                document.getElementById('helpButton').style.marginTop = "0";
+
                 document.getElementById('chargingIndicator2').style.marginTop = "10%";
                 document.getElementById('chargingIndicator2').style.marginLeft = "0";
                 document.getElementById('chargingIndicator2').style.width = "50%";
@@ -362,6 +379,9 @@ body {
                 settingsDivHandle.style.top = "initial";
                 settingsDivHandle.style.bottom = "0";
                 settingsDivHandle.style.width = "100%";
+
+                document.getElementById('helpButton').style.marginTop = "-1.5em";
+
                 document.getElementById('theGraph').style.width = "80%";
                 document.getElementById('chargingIndicator').style.marginTop = "0";
                 document.getElementById('chargingIndicator').style.marginLeft = "0";
