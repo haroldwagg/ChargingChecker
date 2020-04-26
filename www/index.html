@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
         <link rel="stylesheet" type="text/css" href="index.css" />
-        <title>Blank App</title>
+        <title>Chiming Charging Checker</title>
     </head>
     <body>
         <div id="logoDiv">
@@ -31,9 +31,9 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2" align="center">
+              <td colspan="2" align="center" valign="middle">
                 <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: hidden" />
-                <button onClick="#" id="helpButton" style="margin-left: 2.5em;">&nbsp; <b>HELP</b> &nbsp;</button>
+                <button onClick="doHelp()" id="helpButton"> &nbsp; <b>HELP</b> &nbsp; </button>
               </td>
             </tr>
 
@@ -55,7 +55,7 @@
               <td align="center">
                 <img src="nochargingINACTIVE.png" id="chargingIndicator2" style="visibility: hidden" />
                 <br />
-                <button onClick="#" id="helpButton2">&nbsp; <b>HELP</b> &nbsp;</button>
+                <button onClick="doHelp()" id="helpButton"> &nbsp; <b>HELP</b> &nbsp; </button>
               </td>
 
             </tr>
@@ -115,15 +115,17 @@ body {
   }
 
   #helpButton {
-    margin-left: 2em;
-    height: 1.5em;
+    height: 2.5em;
     color: #0000aa;
     background-color: #e0e0ff;
+    display: block;
+    margin-top:-55px;
+    margin-left: 200px;
   }
 
   #helpButton2 {
     margin-left: 0;
-    height: 1.5em;
+    height: 2.5em;
     color: #0000aa;
     background-color: #e0e0ff;
   }
@@ -367,7 +369,7 @@ body {
                 settingsDivHandle.style.right = "0";
                 document.getElementById('theGraph2').style.width = "75%";
 
-                document.getElementById('helpButton').style.marginTop = "0";
+  //              document.getElementById('helpButton').style.marginTop = "0";
 
                 document.getElementById('chargingIndicator2').style.marginTop = "10%";
                 document.getElementById('chargingIndicator2').style.marginLeft = "0";
@@ -381,7 +383,7 @@ body {
                 settingsDivHandle.style.bottom = "0";
                 settingsDivHandle.style.width = "100%";
 
-                document.getElementById('helpButton').style.marginTop = "-1.5em";
+//                document.getElementById('helpButton').style.marginBottom = "88px";
 
                 document.getElementById('theGraph').style.width = "80%";
                 document.getElementById('chargingIndicator').style.marginTop = "0";
@@ -575,6 +577,10 @@ body {
           }
 
           function closeChargedLooper()   {
+            if (closeCharged && PLUGGED_STATUS)   {
+              return;
+            }
+
             if (BAT_LEVEL < 99)   {
               closeChargedCounter = 0;
               closeCharged = false;
@@ -590,6 +596,10 @@ body {
 
           function adjustVolume(v)   {
             CURRENT_VOLUME = v;
+          }
+
+          function doHelp()   {
+            alert("doHelp");
           }
 
         </script>
