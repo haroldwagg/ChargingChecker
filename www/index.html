@@ -5,606 +5,99 @@
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
         <link rel="stylesheet" type="text/css" href="index.css" />
         <title>Chiming Charging Checker</title>
+
+        <style>
+          body, html {
+            height: 100%;
+            margin: 0;
+          }
+
+          .bg {
+            /* The image used */
+            background-image: url("assets/background-portrait-cropped2.jpg");
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+
+          .bg2 {
+            /* The image used */
+            background:linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url("assets/background-portrait-cropped2.jpg");
+
+            /* Full height */
+            height: 100%;
+
+            /* Center and scale the image nicely */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+
+          }
+
+
+
+        </style>
+
     </head>
     <body>
-<!--
-        <div id="logoDiv">
-          <img src="CC_Logo.png" width="180" height="70" id="logoImg" />
-        </div>
-        <div id="tableContainer">
 
-          <table id="mainTable" style="display: none;">
-            <tr>
-              <td id="percentPanel" align="right">
-                <p id="percentParagraph">
+      <div name="mybg" id="mybg" class="bg"></div>
 
-                </p>
-
-              </td>
-              <td id="percentSignPanel">
-                %
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" align="center" height="45">
-                <img src="BG1.png" id="theGraph" style="visibility: hidden" />
-
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" align="center" valign="middle">
-                <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: hidden" />
-                <button onClick="doHelp()" id="helpButton"> &nbsp; <b>HELP</b> &nbsp; </button>
-              </td>
-            </tr>
-
-
-          </table>
-
-
-          <table id="mainTable2" style="display: none;">
-            <tr>
-              <td id="percentPanel" align="right">
-                <p id="percentParagraph2">
-
-                </p>
-
-              </td>
-              <td id="percentSignPanel2">
-                &nbsp&nbsp;%
-              </td>
-              <td align="center">
-                <img src="nochargingINACTIVE.png" id="chargingIndicator2" style="visibility: hidden" />
-                <br />
-                <button onClick="doHelp()" id="helpButton"> &nbsp; <b>HELP</b> &nbsp; </button>
-              </td>
-
-            </tr>
-            <tr>
-              <td colspan="3" align="center" height="45">
-                <img src="BG1.png" id="theGraph2" style="visibility: hidden" />
-
-              </td>
-            </tr>
-
-          </table>
-
-
-
-
-
-
-        </div>
-        <div id="settingsDiv">
-          <p id="settingsP">
-            Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
-            <br />
-            <select id="manualChimes" onChange="manualDing(this)">
-              <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
-              <option value="fullcharge">Play FULL CHARGE Chime</option>
-              <option value="upper">Play CHARGING Chime</option>
-              <option value="downer">Play NOT CHARGING Chime</option>
-              <option value="nochange">Play NO CHANGE Chime</option>
-            </select>
-            <br />
-              Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.6" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
-          </p>
-        </div>
-
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="Insomnia.js"></script>
-
-
-<style>
-* {
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
-   font-size: 17px;
-  /* font-size: 26px; */
-}
-
-/* @media screen and (min-width: 780px) { */
-  #mainTable {
-
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-  }
-
-  #helpButton {
-    height: 2.5em;
-    color: #0000aa;
-    background-color: #e0e0ff;
-    display: block;
-    margin-top:-55px;
-    margin-left: 200px;
-  }
-
-  #helpButton2 {
-    margin-left: 0;
-    height: 2.5em;
-    color: #0000aa;
-    background-color: #e0e0ff;
-  }
-
-  #percentParagraph, #percentParagraph2 {
-    font-size: 10em;
-    color: #770077;
-    text-align: right;
-    -webkit-transform: scaleY(1.4);
-    transform: scaleY(1.4);
-    margin-top: 10px;
-    margin-left: -10px;
-    letter-spacing: -5px;
-    font-weight: normal;
-  }
-
-
-  #percentPanel {
-    width: 15%;
-
-  }
-
-  #percentSignPanel, #percentSignPanel2 {
-    width: 10%;
-    font-size: 3.8em;
-    -webkit-transform: scaleY(1.8);
-    transform: scaleY(1.8);
-    color: #770077;
-  }
-
-  #theGraph, #theGraph2 {
-    width: 80%;
-    height: 25px;
-    margin-top: -10px;
-  }
-
-  #chargingIndicator, #chargingIndicator2 {
-    width: 40%;
-    height: auto;
-    margin-left: 0px;
-    margin-top: 0px;
-  }
-
-  #settingsDiv {
-    width: 100%;
-    background-color: #ccd;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    display: relative;
-    height: 90px;
-    position: fixed;
-    bottom: 0;
-    overflow:visible;
-    font-size: 0.9em;
-  }
-
-  #settingsP {
-    text-align: center;
-  }
-
-  #manualChimes {
-    margin-top: 12px;
-    font-size: 0.9em;
-  }
-
-  #volumeRange {
-    margin-top: 12px;
-    width: 30%;
-
-  }
-
-  #speakCheck {
-    width: 25px;
-    height: 25px;
-    padding-bottom: 22px;
-  }
-
-</style>
-
-        <script type="text/javascript">
-          var BAT_LEVEL = 0;
-          var PREV_BAT_LEVEL = 0;
-          var PLUGGED_STATUS = false;
-          var INDICATOR = "";
-          var DEVICE_TYPE, SIZE, ORIENT;
-
-          var UP_DING = "audio/UpBeep.mp3";
-          var DOWN_DING = "audio/DownBeep.mp3";
-          var NC_DING = "audio/NoChangeBeep.mp3";
-          var CHARGED_DING = "audio/FullCharge.mp3";
-          var COUNTDOWN_FILE = "audio/countwav.wav";
-          var CHARGING_FILE = "audio/Charging.mp3";
-          var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3";
-          var CHARGED_FILE = "audio/Charged.mp3";
-          var DING_DELAY = 240000;
-          var SPEAK_PERCENT = false;
-          var MEDIA_READY = false;
-          var my_percent_dinger = "undefined";
-          var safeToDing = true;
-          var failSafe = 0;
-
-          var CHARGER_CONNECTED = "chargedACTIVE.png";
-          var CHARGER_DISCONNECTED = "nochargingACTIVE.png";
-
-          var CURRENT_VOLUME = 0.6;
-
-          var html = "";
-          var mainLooper, dingLooper;
-          var closeCharged = false;
-          var closeChargedCounter = 0;
-          var closeChargedTimeout;
-
-          var chargingIconHandle = document.getElementById("chargingIndicator");
-          var chargingIconHandle2 = document.getElementById("chargingIndicator2");
-          var graphHandle = document.getElementById("theGraph");
-          var graphHandle2 = document.getElementById("theGraph2");
-          var settingsDivHandle = document.getElementById("settingsDiv");
-
-          var p = window.location.pathname;
-          this.root = p.substring(0, p.lastIndexOf('/')) + "/";
-          var percentDingFile = this.root + COUNTDOWN_FILE;
-
-          document.addEventListener("deviceready", starter, false);
-          window.addEventListener("orientationchange", onOChange, true);
-
-          function starter()   {
-            getScreenSize();
-
-            window.plugins.insomnia.keepAwake();
-
-//            str = JSON.stringify(navigator);
-//            alert(str);
-
-            navigator.getBattery().then(function(battery) {
-              BAT_LEVEL = Math.round(battery.level * 100);
-              PLUGGED_STATUS = battery.charging;
-
-              battery.onchargingchange = function() {
-                if (PLUGGED_STATUS)   {
-                  doDing('disconnected', true);
-                }
-                else   {
-                  doDing('charging', true);
-                }
-                clearTimeout(mainLooper);
-                doMainLoop();
-                clearTimeout(dingLooper);
-                dingTimer();
-              };
-              battery.onlevelchange = function() {
-                clearTimeout(mainLooper);
-                doMainLoop();
-              };
-            });
-
-            document.getElementById('theGraph').style.visibility = "visible";
-            document.getElementById('theGraph2').style.visibility = "visible";
-            document.getElementById('chargingIndicator').style.visibility = "visible";
-            document.getElementById('chargingIndicator2').style.visibility = "visible";
-            onOChange();
-
-            window.setTimeout(dingTimer, 3000);
-            closeChargedLooper();
-            doMainLoop();
-          }
-
-            function doMainLoop()   {
-              navigator.getBattery().then(function(battery) {
-                BAT_LEVEL = Math.round(battery.level * 100);
-                PLUGGED_STATUS = battery.charging;
-
-                document.getElementById("percentParagraph").innerHTML = "" + BAT_LEVEL;
-                document.getElementById("percentParagraph2").innerHTML = "" + BAT_LEVEL;
-
-                if (PLUGGED_STATUS)   {
-                  chargingIconHandle.src = CHARGER_CONNECTED;
-                  chargingIconHandle2.src = CHARGER_CONNECTED;
-                }
-                else   {
-                  chargingIconHandle.src = CHARGER_DISCONNECTED;
-                  chargingIconHandle2.src = CHARGER_DISCONNECTED;
-                }
-
-                if (BAT_LEVEL >= 96 || closeCharged)   {
-                  graphHandle.src = "BG10.png";
-                  graphHandle2.src = "BG10.png";
-                }
-                else   {
-                  var c = Math.floor(BAT_LEVEL / 10);
-                  var bgFile = "BG" + c + ".png";
-                  graphHandle.src = bgFile;
-                  graphHandle2.src = bgFile;
-//                  alert(bgFile);
-                }
-              });
-
-              mainLooper = window.setTimeout(doMainLoop, 60000);
-            }
-
-
-            function doScreenSpecs()  {
-                    var ratio = window.devicePixelRatio || 1;
-                    var oput = "SIZE: " + SIZE + "\rORIENTATION: " + ORIENT + "\rSCREEN WIDTH: " + screen.width;
-                    oput += "\rSCREEN HEIGHT: " + screen.height + "\rPIXEL RATIO: " + ratio;
-                    alert (oput);
-                  }
-
-
-
-      //
-      //  Should be called only once in starter(). Size of the device will not change.
-      //
-            function getScreenSize()   {
-              var ratio = window.devicePixelRatio || 1;
-//              if ((screen.height / ratio > 780) || (screen.width / ratio > 780))   {
-              if ((screen.height > 780) || (screen.width > 780))   {
-                SIZE = "big";
-              }
-              else   {
-                SIZE = "small";
-              }
-//            alert("SIZE is " + SIZE);
-            }
-
-      //  Called every time orientation changes
-      //
-            function onOChange()   {
-              ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
-              DEVICE_TYPE = SIZE + "-" + ORIENT;
-
-  //                alert("DEVICE_TYPE is " + DEVICE_TYPE);
-  // alert(doScreenSpecs());
-  //
-
-              if (DEVICE_TYPE == "small-landscape")   {
-                document.getElementById('tableContainer').style.marginLeft = "0";
-                document.getElementById('percentParagraph2').style.marginLeft = "10%";
-                document.getElementById('percentSignPanel2').style.marginLeft = "10%";
-                settingsDivHandle.style.top = "0";
-                settingsDivHandle.style.width = "50%";
-                settingsDivHandle.style.right = "0";
-                document.getElementById('theGraph2').style.width = "75%";
-
-  //              document.getElementById('helpButton').style.marginTop = "0";
-
-                document.getElementById('chargingIndicator2').style.marginTop = "10%";
-                document.getElementById('chargingIndicator2').style.marginLeft = "0";
-                document.getElementById('chargingIndicator2').style.width = "50%";
-                document.getElementById('mainTable').style.display = "none";
-                document.getElementById('mainTable2').style.display = "block";
-              }
-              else if (DEVICE_TYPE == "small-portrait")   {
-                document.getElementById('tableContainer').style.marginLeft = "0";
-                settingsDivHandle.style.top = "initial";
-                settingsDivHandle.style.bottom = "0";
-                settingsDivHandle.style.width = "100%";
-
-//                document.getElementById('helpButton').style.marginBottom = "88px";
-
-                document.getElementById('theGraph').style.width = "80%";
-                document.getElementById('chargingIndicator').style.marginTop = "0";
-                document.getElementById('chargingIndicator').style.marginLeft = "0";
-                document.getElementById('chargingIndicator').style.width = "40%";
-                document.getElementById('mainTable').style.display = "block";
-                document.getElementById('mainTable2').style.display = "none";
-              }
-              else if (DEVICE_TYPE == "big-landscape")   {
-                document.body.style.fontSize = "28px";
-                document.getElementById('tableContainer').style.marginLeft = "0";
-                document.getElementById('percentParagraph2').style.fontSize = "9em";
-                document.getElementById('percentParagraph2').style.marginLeft = "10%";
-                document.getElementById('logoImg').style.width = "252px";
-                document.getElementById('logoImg').style.height = "98px";
-                settingsDivHandle.style.top = "0";
-                settingsDivHandle.style.width = "50%";
-                settingsDivHandle.style.right = "0";
-                document.getElementById('settingsP').style.fontSize = "0.6em";
-                document.getElementById('theGraph2').style.width = "75%";
-                document.getElementById('theGraph2').style.marginTop = "3.5%";
-                document.getElementById('chargingIndicator2').style.marginTop = "10%";
-                document.getElementById('chargingIndicator2').style.marginLeft = "0";
-                document.getElementById('chargingIndicator2').style.width = "38%";
-                document.getElementById('mainTable').style.display = "none";
-                document.getElementById('mainTable2').style.display = "block";
-              }
-              else if (DEVICE_TYPE == "big-portrait")   {
-                document.body.style.fontSize = "28px";
-                document.getElementById('tableContainer').style.marginLeft = "0";
-                document.getElementById('percentParagraph').style.fontSize = "10em";
-                settingsDivHandle.style.top = "initial";
-                settingsDivHandle.style.bottom = "0";
-                settingsDivHandle.style.width = "100%";
-                document.getElementById('logoImg').style.width = "252px";
-                document.getElementById('logoImg').style.height = "98px";
-                document.getElementById('settingsP').style.fontSize = "0.6em";
-                document.getElementById('theGraph').style.width = "80%";
-                document.getElementById('theGraph').style.marginTop = "3.5%";
-                document.getElementById('chargingIndicator').style.marginTop = "10%";
-                document.getElementById('chargingIndicator').style.marginLeft = "0";
-                document.getElementById('chargingIndicator').style.width = "40%";
-                document.getElementById('mainTable').style.display = "block";
-                document.getElementById('mainTable2').style.display = "none";
-              }
-            }
-
-
-          function dingTimer(none)   {
-            if (none != "none")   {
-              if (! PLUGGED_STATUS)   {
-                doDing('downer');
-              }
-              else if (BAT_LEVEL == 100 || closeCharged)   {
-                doDing('fullcharge');
-              }
-              else if ((BAT_LEVEL > PREV_BAT_LEVEL) || (PREV_BAT_LEVEL == 0))   {
-                doDing('upper');
-              }
-              else if (BAT_LEVEL < PREV_BAT_LEVEL)   {
-                doDing('downer');
-              }
-              else   {
-                doDing('nochange');
-              }
-            }
-
-            PREV_BAT_LEVEL = BAT_LEVEL;
-            dingLooper = window.setTimeout(dingTimer, DING_DELAY);
-          }
-
-
-          function doDing(dir, noPercent)   {
-            var dingFile = "";
-            var my_dinger;
-            noPercent = noPercent || false;
-
-            if (safeToDing)   {
-              safeToDing = false;
-              if (SPEAK_PERCENT && ! noPercent)   {
-                var Percenter = setTimeout(talkPercent, 1250);
-              }
-
-              if (dir == "disconnected")   {
-                dingFile = this.root + DISCONNECTED_FILE;
-              }
-              else if (dir == "charging")   {
-                dingFile = this.root + CHARGING_FILE;
-              }
-              else if (dir == "downer")   {
-                dingFile = this.root + DOWN_DING;
-              }
-              else if (dir == "upper")   {
-                dingFile = this.root + UP_DING;
-              }
-              else if (dir == "nochange")   {
-                dingFile = this.root + NC_DING;
-              }
-              else if (dir == "fullcharge")   {
-                dingFile = this.root + CHARGED_DING;
-              }
-
-              my_dinger = new Media(dingFile,
-                  ignoreError(),
-                  ignoreError()
-                );
-
-              my_dinger.play({ playAudioWhenScreenIsLocked : true });
-              my_dinger.setVolume(CURRENT_VOLUME);
-
-              var Timeouter = setTimeout(function()   {
-                my_dinger.stop();
-                my_dinger.release();
-                safeToDing = true;
-              }, 2000);
-            }
-
-          }
-
-          function talkPercent()   {
-            if (BAT_LEVEL == 100 || closeCharged)   {
-              percentDingFile = this.root + CHARGED_FILE;
-            }
-            else   {
-              percentDingFile = this.root + COUNTDOWN_FILE;
-            }
-
-            my_percent_dinger = new Media(percentDingFile,
-              setMediaFlag(),
-              ignoreError()
-            );
-
-            var check = function()   {
-              if (MEDIA_READY)   {
-                if (BAT_LEVEL < 100 && ! closeCharged)   {
-                  my_percent_dinger.seekTo(0);
-                  my_percent_dinger.seekTo(BAT_LEVEL * 5 * 1000);
-                }
-
-                my_percent_dinger.play({ playAudioWhenScreenIsLocked : true });
-                my_percent_dinger.setVolume(CURRENT_VOLUME);
-
-                var Timeouter2 = setTimeout(function()   {
-                  my_percent_dinger.stop();
-                  my_percent_dinger.release();
-                }, 4000);
-                MEDIA_READY = false;
-                failSafe = 0;
-              }
-              else {
-                if (++failSafe < 4)   {
-                  setTimeout(check, 500); // check again in half a second; abort after 1.5 seconds
-                }
-              }
-            };
-
-            check();
-          }
-
-          function setMediaFlag()   {
-            MEDIA_READY = true;
-          }
-
-          function ignoreError()   {
-            ;
-          }
-
-          function manualDing(sel)   {
-            doDing(sel.options[sel.selectedIndex].value, true);
-          }
-
-          function displayDelayTime(theValue)   {
-            let tempp = theValue / 18.258;
-            let tempp2 = tempp * tempp * 11.112;
-            var minuteDelay = Math.floor(tempp2);
-
-            if (minuteDelay == 0)   {
-              document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-              clearTimeout(dingLooper);
-            }
-            else   {
-              document.getElementById('delayMsg').innerHTML = minuteDelay + " mins";
-              DING_DELAY = minuteDelay * 60 * 1000;
-              clearTimeout(dingLooper);
-              dingTimer("none");
-            }
-          }
-
-          function doSpeakPercent()   {
-            SPEAK_PERCENT = document.getElementById('speakCheck').checked ? true : false;
-          }
-
-          function closeChargedLooper()   {
-            if (closeCharged && PLUGGED_STATUS)   {
-              return;
-            }
-
-            if (BAT_LEVEL < 99)   {
-              closeChargedCounter = 0;
-              closeCharged = false;
-            }
-            else   {
-              if (++closeChargedCounter > 9)   {
-                closeCharged = true;
-              }
-            }
-
-            closeChargedTimeout = window.setTimeout(closeChargedLooper, 60000);
-          }
-
-          function adjustVolume(v)   {
-            CURRENT_VOLUME = v;
-          }
-
-          function doHelp()   {
-            alert("doHelp");
-          }
-
-        </script>
--->
-        
+      <p>This example creates a full page background image. Try to resize the browser window to see how it always will cover the full screen (when scrolled to top), and that it scales nicely on all screen sizes.</p>
+<br /><br /><button onClick="buttonClick()">CLICK</button>
     </body>
-</html>
+
+    <script>
+
+      var ORIENT;
+
+      function starter()   {
+        alert( "Starter");
+        onOChange();
+      }
+
+      function doScreenSpecs()  {
+        var ratio = window.devicePixelRatio || 1;
+        var oput = "ORIENTATION: " + ORIENT + "\rSCREEN WIDTH: " + screen.width;
+        oput += "\rSCREEN HEIGHT: " + screen.height + "\rPIXEL RATIO: " + ratio;
+        alert (oput);
+      }
+
+      function buttonClick()   {
+        document.getElementById("mybg").className = "bg2";
+      }
+
+
+      function onOChange()   {
+        ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
+        doBrightScreen(ORIENT);
+      }
+
+      function doBrightScreen(ORIENT)   {
+
+
+//        doScreenSpecs();
+//
+//        if (ORIENT == "portrait")   {
+//          document.body.style.backgroundImage = "url('assets/background-portrait-master.jpg')";
+//        }
+//        else   {
+//          document.body.style.backgroundImage = "url('assets/background-landscape-cropped.jpg')";
+//        }
+
+
+      }
+
+
+      document.addEventListener("deviceready", starter, false);
+      window.addEventListener("orientationchange", onOChange, true);
+
+      alert("init");
+      starter();
+  </script>
+  </html>
