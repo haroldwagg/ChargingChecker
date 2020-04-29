@@ -77,6 +77,21 @@
             padding-bottom: 22px;
           }
 
+          #numberDiv {
+            width: 50%;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            display: relative;
+            height: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow:visible;
+            font-size: 12em;
+            color: yellow;
+          }
+
+
 
         </style>
 
@@ -84,6 +99,8 @@
     <body>
 
       <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
+
+      <div name="numberDiv" id="numberDiv" onClick="doBrightScreen()">58%</div>
 
       <div id="settingsDiv" onClick="doBrightScreen()">
         <p id="settingsP">
@@ -125,6 +142,16 @@
 
       function onOChange()   {
         ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
+
+        if (ORIENT == "portrait")   {
+          document.getElementById("numberDiv").style.width = "66%";
+        }
+        else   {
+          document.getElementById("numberDiv").style.width = "50%";
+        }
+
+
+
         doBrightScreen();
       }
 
@@ -156,14 +183,14 @@
         document.getElementById("mybg").className = "bg";
         document.getElementById("settingsDiv").style.backgroundColor = "#ccd";
         document.getElementById("manualChimes").style.backgroundColor = "#fff";
-        document.getElementById("speakCheck").style.background = "#fff";
+        document.getElementById("numberDiv").style.color = "yellow";
       }
 
       function doDimScreen()   {
         document.getElementById("mybg").className = "bg2";
         document.getElementById("settingsDiv").style.backgroundColor = "#666";
         document.getElementById("manualChimes").style.backgroundColor = "#888";
-        document.getElementById("speakCheck").style.background = "#888";
+        document.getElementById("numberDiv").style.color = "#775";
       }
 
 
