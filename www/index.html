@@ -6,6 +6,11 @@
         <title>Chiming Charging Checker</title>
 
         <style>
+          * {
+            padding: 0;
+            margin: 0;
+          }
+
           body, html {
             height: 100%;
             margin: 0;
@@ -37,6 +42,40 @@
             background-size: cover;
           }
 
+          #settingsDiv {
+            width: 100%;
+            background-color: #ccd;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            display: relative;
+            height: 88px;
+            position: fixed;
+            bottom: 0;
+            overflow:visible;
+            font-size: 0.9em;
+          }
+
+          #settingsP {
+            text-align: center;
+          }
+
+          #manualChimes {
+            margin-top: 7px;
+            margin-bottom: 1px;
+            font-size: 0.9em;
+          }
+
+          #volumeRange {
+            margin-top: 12px;
+            width: 30%;
+
+          }
+
+          #speakCheck {
+            width: 25px;
+            height: 25px;
+            padding-bottom: 22px;
+          }
 
 
         </style>
@@ -45,6 +84,23 @@
     <body>
 
       <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
+
+      <div id="settingsDiv" onClick="doBrightScreen()">
+        <p id="settingsP">
+          Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
+          <br />
+          <select id="manualChimes" onChange="manualDing(this)">
+            <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
+            <option value="fullcharge">Play FULL CHARGE Chime</option>
+            <option value="upper">Play CHARGING Chime</option>
+            <option value="downer">Play NOT CHARGING Chime</option>
+            <option value="nochange">Play NO CHANGE Chime</option>
+          </select>
+          <br />
+            Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.6" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
+        </p>
+      </div>
+
 
     </body>
 
@@ -72,6 +128,24 @@
         doBrightScreen();
       }
 
+      function displayDelayTime(theValue)   {
+        let tempp = theValue / 18.258;
+        let tempp2 = tempp * tempp * 11.112;
+        var minuteDelay = Math.floor(tempp2);
+
+        if (minuteDelay == 0)   {
+          document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+//          clearTimeout(dingLooper);
+        }
+        else   {
+          document.getElementById('delayMsg').innerHTML = minuteDelay + " mins";
+//          DING_DELAY = minuteDelay * 60 * 1000;
+//          clearTimeout(dingLooper);
+//          dingTimer("none");
+        }
+      }
+
+
 //
 //  brightness
 //
@@ -80,10 +154,16 @@
         brightnessTimeOuter = setTimeout(doDimScreen, 15000);
 
         document.getElementById("mybg").className = "bg";
+        document.getElementById("settingsDiv").style.backgroundColor = "#ccd";
+        document.getElementById("manualChimes").style.backgroundColor = "#fff";
+        document.getElementById("speakCheck").style.background = "#fff";
       }
 
       function doDimScreen()   {
         document.getElementById("mybg").className = "bg2";
+        document.getElementById("settingsDiv").style.backgroundColor = "#666";
+        document.getElementById("manualChimes").style.backgroundColor = "#888";
+        document.getElementById("speakCheck").style.background = "#888";
       }
 
 
