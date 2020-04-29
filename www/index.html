@@ -3,7 +3,6 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-        <link rel="stylesheet" type="text/css" href="index.css" />
         <title>Chiming Charging Checker</title>
 
         <style>
@@ -27,7 +26,7 @@
 
           .bg2 {
             /* The image used */
-            background:linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url("assets/background-portrait-cropped2.jpg");
+            background:linear-gradient(rgba(0,0,0,0.66), rgba(0,0,0,0.66)), url("assets/background-portrait-cropped2.jpg");
 
             /* Full height */
             height: 100%;
@@ -36,7 +35,6 @@
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
-
           }
 
 
@@ -46,18 +44,19 @@
     </head>
     <body>
 
-      <div name="mybg" id="mybg" class="bg"></div>
+      <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
 
-      <p>This example creates a full page background image. Try to resize the browser window to see how it always will cover the full screen (when scrolled to top), and that it scales nicely on all screen sizes.</p>
-<br /><br /><button onClick="buttonClick()">CLICK</button>
     </body>
 
     <script>
 
       var ORIENT;
+      var brightnessTimeOuter = "";
 
+//
+//  utils
+//
       function starter()   {
-        alert( "Starter");
         onOChange();
       }
 
@@ -68,36 +67,32 @@
         alert (oput);
       }
 
-      function buttonClick()   {
+      function onOChange()   {
+        ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
+        doBrightScreen();
+      }
+
+//
+//  brightness
+//
+      function doBrightScreen()   {
+        clearTimeout(brightnessTimeOuter);
+        brightnessTimeOuter = setTimeout(doDimScreen, 15000);
+
+        document.getElementById("mybg").className = "bg";
+      }
+
+      function doDimScreen()   {
         document.getElementById("mybg").className = "bg2";
       }
 
 
-      function onOChange()   {
-        ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
-        doBrightScreen(ORIENT);
-      }
-
-      function doBrightScreen(ORIENT)   {
-
-
-//        doScreenSpecs();
 //
-//        if (ORIENT == "portrait")   {
-//          document.body.style.backgroundImage = "url('assets/background-portrait-master.jpg')";
-//        }
-//        else   {
-//          document.body.style.backgroundImage = "url('assets/background-landscape-cropped.jpg')";
-//        }
-
-
-      }
-
-
+//  init
+//
       document.addEventListener("deviceready", starter, false);
       window.addEventListener("orientationchange", onOChange, true);
 
-      alert("init");
       starter();
   </script>
   </html>
