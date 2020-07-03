@@ -13,7 +13,7 @@
 
           function tick()   {
             snd.play();
-            document.getElementById('trial').set(55);
+  //          document.getElementById('trial').set(55);
           }
 
         </script>
@@ -124,12 +124,15 @@
 
     </head>
     <body>
-      <div
-  id="trial"
-  data-preset="fan"
-  class="ldBar label-center"
-  data-value="35"
-></div>
+      <div id="myItem1"></div>
+    <script>
+      /* construct manually */
+      var bar1 = new ldBar("#myItem1");
+      /* ldBar stored in the element */
+      var bar2 = document.getElementById('myItem1').ldBar;
+      bar1.set(60);
+    </script>
+    
       <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
 
 
