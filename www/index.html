@@ -126,13 +126,15 @@
 
     </head>
     <body>
-      <div id="myItem1"></div>
+      <div id="myItem1" style="width: 100%;"></div>
     <script>
       /* construct manually */
       bar1 = new ldBar("#myItem1");
       /* ldBar stored in the element */
       bar2 = document.getElementById('myItem1').ldBar;
       bar1.set(pct);
+      bar2.width = "100%";
+      bar1.width = "100%";
     </script>
 
       <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
