@@ -140,13 +140,15 @@
     </script>
 -->
 
-    <div class="demo ldBar label-center" data-preset="circle" data-value="60" style="width:100%;height:210px"></div>
+    <div class="ldBar label-center" data-preset="circle" data-value="60" style="width:100%;height:210px"></div>
     <style type="text/css">
       .demo.ldBar .ldBar-label {
-        color: #09f;
+        color: #f00000;
         font-family: 'varela round';
         font-size: 2.5em;
         font-weight: 900;
+        width: 400px;
+        height: 400px;
       }
       .demo.ldBar path.mainline { stroke-width: 10; stroke: #09f; stroke-linecap: round }
       .demo.ldBar path.baseline { stroke-width: 14; stroke: #f1f2f3; stroke-linecap: round }
@@ -156,14 +158,14 @@
       <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
 
 
-
+<!--
 
       <div name="numberDiv" id="numberDiv" onClick="doBrightScreen()">
       <div name="numberDiv2" id="numberDiv2" onClick="doBrightScreen()"><center><p id="myP" name="myP">58<sup><span id="pct">%</span></sup></p></center></div>
       <div name="graphDiv" id="graphDiv"  onClick="doBrightScreen()"><center>
         <img src="BG1.png" id="theGraph"></center></div>
       </div>
-
+-->
       <div id="settingsDiv" onClick="doBrightScreen()">
         <p id="settingsP">
           Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
