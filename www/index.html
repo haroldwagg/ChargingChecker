@@ -15,6 +15,7 @@
           function tick()   {
             snd.play();
             pct++;
+            bar1.set(0);
             bar1.set(pct);
           }
 
@@ -136,6 +137,20 @@
       bar2.width = "100%";
       bar1.width = "100%";
     </script>
+
+
+    <div class="demo ldBar label-center" data-preset="circle" data-value="60" style="width:100%;height:210px"></div>
+    <style type="text/css">
+      .demo.ldBar .ldBar-label {
+        color: #09f;
+        font-family: 'varela round';
+        font-size: 2.5em;
+        font-weight: 900;
+      }
+      .demo.ldBar path.mainline { stroke-width: 10; stroke: #09f; stroke-linecap: round }
+      .demo.ldBar path.baseline { stroke-width: 14; stroke: #f1f2f3; stroke-linecap: round }
+    </style>
+    </div>
 
       <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
 
