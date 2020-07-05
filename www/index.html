@@ -154,6 +154,7 @@
         color: red;
         font-family: sans-serif;
         font-weight: 600;
+        margin-top: 0.3em;
       }
       .ldBar {
         position: relative;
@@ -239,8 +240,10 @@
 //        }
 
         if (SIZE == "small")   {
+          document.getElementById('chargingIndicator').style.width = "10em";
           if (ORIENT == "portrait")   {
             document.getElementById('ldBar').style.fontSize = "1.2em";
+            document.getElementById('chargingIndicator').style.margin-top = "-2em";       
           }
           else   {  // ORIENT is landscape
             document.getElementById('ldBar').style.fontSize = "1.7em";
