@@ -139,7 +139,7 @@
       bar1.width = "100%";
     </script>
 -->
-    <div class="ldBar label-center" data-preset="fan" data-value="60" style="width:80%; height:80%; margin: auto;"></div>
+    <div id="ldBar" class="ldBar label-center" data-preset="fan" data-value="60" style="width:80%; height:80%; margin: auto;"></div>
     <style type="text/css">
       .ldBar .ldBar-label {
         font-family: 'sans-serif';
@@ -165,90 +165,6 @@
     <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: visible; width: 16em; " />
   </div>
 
-<!--
-    <div class="circle-wrap">
-      <div class="circle">
-
-        <div class="mask full">
-          <div class="fill"></div>
-        </div>
-
-        <div class="mask half">
-          <div class="fill"></div>
-        </div>
-
-        <div class="inside-circle">
-          70%
-        </div>
-
-      </div>
-    </div>
-
-  -->
-    <style>
-    .circle-wrap {
-      margin: 50px auto;
-      width: 150px;
-      height: 150px;
-      background: #e6e2e7;
-      border-radius: 50%;
-    }
-    .circle-wrap .circle .mask,
-    .circle-wrap .circle .fill {
-      width: 150px;
-      height: 150px;
-      position: absolute;
-      border-radius: 50%;
-    }
-    .circle-wrap .circle .mask {
-      clip: rect(0px, 150px, 150px, 75px);
-    }
-    .circle-wrap .circle .mask .fill {
-      clip: rect(0px, 75px, 150px, 0px);
-      background-color: #9e00b1;
-    }
-    .circle-wrap .circle .mask.full,
-    .circle-wrap .circle .fill {
-      animation: fill ease-in-out 3s;
-      transform: rotate(126deg);
-    }
-
-    @keyframes fill {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(126deg);
-      }
-    }
-
-    .circle-wrap .inside-circle {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      background: #fff;
-      line-height: 130px;
-      text-align: center;
-      margin-top: 10px;
-      margin-left: 10px;
-      position: absolute;
-      z-index: 100;
-      font-weight: 700;
-      font-size: 2em;
-    }
-
-    </style>
-<!--
-      <div name="mybg" id="mybg" class="bg" onClick="doBrightScreen()"></div>
-
-
-
-      <div name="numberDiv" id="numberDiv" onClick="doBrightScreen()">
-      <div name="numberDiv2" id="numberDiv2" onClick="doBrightScreen()"><center><p id="myP" name="myP">58<sup><span id="pct">%</span></sup></p></center></div>
-      <div name="graphDiv" id="graphDiv"  onClick="doBrightScreen()"><center>
-        <img src="BG1.png" id="theGraph"></center></div>
-      </div>
--->
       <div id="settingsDiv" onClick="doBrightScreen()">
         <p id="settingsP">
           Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
@@ -281,8 +197,8 @@
       function starter()   {
 //        alert(fontSize);
 //        alert(Math.round(screen.width / fontSize));
-        onOChange();
         getScreenSize();
+        onOChange();
         setInterval(tick, 1000);
       }
 
@@ -295,7 +211,7 @@
           SIZE = "small";
         }
 //        alert("SIZE is " + SIZE);
-        doScreenSpecs();
+//        doScreenSpecs();
       }
 
       function doScreenSpecs()  {
@@ -322,6 +238,14 @@
 //          document.getElementById("numberDiv").style.width = "50%";
 //        }
 
+        if (SIZE == "small")   {
+          document.getElementById('ldBar').style.fontSize = "1.5em";
+
+        }
+        else   {    // Size is Large
+
+
+        }
 
       }
 
