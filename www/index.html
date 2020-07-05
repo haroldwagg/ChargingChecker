@@ -239,7 +239,12 @@
 //        }
 
         if (SIZE == "small")   {
-          document.getElementById('ldBar').style.fontSize = "1.5em";
+          if (ORIENT == "portrait")   {
+            document.getElementById('ldBar').style.fontSize = "1.2em";
+          }
+          else   {  // ORIENT is landscape
+            document.getElementById('ldBar').style.fontSize = "1.7em";
+          }
 
         }
         else   {    // Size is Large
