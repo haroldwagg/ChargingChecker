@@ -154,11 +154,10 @@
         color: red;
         font-family: sans-serif;
         font-weight: 400;
-        color: black;
       }
       .ldBar {
         position: relative;
-        font-size: 3em;
+        font-size: 3em;  /* Size of Percentage font  */
         font-family: sans-serif;
       }
     </style>
@@ -270,7 +269,7 @@
     </body>
 
     <script>
-
+      var SIZE;
       var ORIENT;
       var brightnessTimeOuter = "";
       var brightnessStatus = "BRIGHT";
@@ -283,7 +282,20 @@
 //        alert(fontSize);
 //        alert(Math.round(screen.width / fontSize));
         onOChange();
+        getScreenSize();
         setInterval(tick, 1000);
+      }
+
+      function getScreenSize()   {
+        var ratio = window.devicePixelRatio || 1;
+        if ((screen.height / ratio > 780) || (screen.width / ratio > 780))   {
+          SIZE = "big";
+        }
+        else   {
+          SIZE = "small";
+        }
+//        alert("SIZE is " + SIZE);
+        doScreenSpecs();
       }
 
       function doScreenSpecs()  {
@@ -295,24 +307,22 @@
 
       function onOChange()   {
         ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
-        var h = "document.getElementById(\"numberDiv\").style.fontSize = \"" + Math.round(screen.width / fontSize / 1.75) + "em\"";
+//        var h = "document.getElementById(\"numberDiv\").style.fontSize = \"" + Math.round(screen.width / fontSize / 1.75) + "em\"";
 //        alert(h);
-        eval(h);
+//        eval(h);
 //          var i = "document.getElementById(\"pct\").style.fontSize = \"" + Math.round(screen.width / fontSize / 1.75) + "em\"";
 //        alert(i);
 //        eval(i);
-        document.getElementById("pct").style.fontSize = ".5em";
+//        document.getElementById("pct").style.fontSize = ".5em";
+//
+//        if (ORIENT == "portrait")   {
+//          document.getElementById("numberDiv").style.width = "100%";
+//        }
+//        else   {
+//          document.getElementById("numberDiv").style.width = "50%";
+//        }
 
-        if (ORIENT == "portrait")   {
-          document.getElementById("numberDiv").style.width = "100%";
-        }
-        else   {
-          document.getElementById("numberDiv").style.width = "50%";
-        }
 
-
-
-        doBrightScreen();
       }
 
       function displayDelayTime(theValue)   {
