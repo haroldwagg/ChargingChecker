@@ -212,10 +212,6 @@
 //        alert(Math.round(screen.width / fontSize));
         getScreenSize();
 
-        var topTrHeight = screen.height - 200;
-        var q = "document.getElementById('container').style.height = \"" + topTrHeight + "px\"";
-        alert (q);
-        eval(q);
 
         onOChange();
         setInterval(tick, 1000);
@@ -241,7 +237,11 @@
       }
 
       function onOChange()   {
-          document.getElementById('chargingIndicator').style.width = "50px";
+        var topTrHeight = screen.height - 200;
+        var q = "document.getElementById('container').style.height = \"" + topTrHeight + "px\"";
+        alert (q);
+        eval(q);
+
         ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
 //        var h = "document.getElementById(\"numberDiv\").style.fontSize = \"" + Math.round(screen.width / fontSize / 1.75) + "em\"";
 //        alert(h);
