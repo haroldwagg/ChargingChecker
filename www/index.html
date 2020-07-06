@@ -15,8 +15,8 @@
           function tick()   {
 //            snd.play();
             pct++;
-            ldBar.set(0);
-            ldBar.set(pct);
+//            ldBar.set(0);
+//            ldBar.set(pct);
           }
 
         </script>
@@ -127,59 +127,50 @@
 
     </head>
     <body>
-      <table id="thisTable" style="width: 100%;">
-        <tr>
-          <td align="center" valign="middle">
-            <div id="container" style="backgroundColor: yellow; margin: auto;">
-              <div id="ldBar" class="ldBar label-center" data-preset="fan" data-value="60" style="width:80%; height:80%; margin: auto;"></div>
-              <style type="text/css">
-                .ldBar .ldBar-label {
-                  font-family: 'sans-serif';
-                  font-size: 1em;
-                  font-weight: 600;
-                  stroke-width: 3;
-                  font-family: sans-serif;
-                }
-                .ldBar path.mainline { stroke-width: 3; stroke: #09f; stroke-linecap: round }
-                .ldBar path.baseline { stroke-width: 3; stroke: #f1f2f3; stroke-linecap: round }
-                .ldBar-label {
-                  color: red;
-                  font-family: sans-serif;
-                  font-weight: 600;
-                  margin-top: 0.7em;
-                }
-                .ldBar {
-                  position: relative;
-                  font-size: 1em;  /* Size of Percentage font  */
-                  font-family: sans-serif;
-                }
-              </style>
-              <div id="chargingIndicatorDiv" style="text-align: center;">
-                <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: visible; width: 10em;" />
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr style="height: 200px;">
-          <td>
-            <div id="settingsDiv" onClick="doBrightScreen()">
-              <p id="settingsP">
-                Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
-                <br />
-                <select id="manualChimes" onChange="manualDing(this)">
-                  <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
-                  <option value="fullcharge">Play FULL CHARGE Chime</option>
-                  <option value="upper">Play CHARGING Chime</option>
-                  <option value="downer">Play NOT CHARGING Chime</option>
-                  <option value="nochange">Play NO CHANGE Chime</option>
-                </select>
-                <br />
-                  Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.6" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
-              </p>
-            </div>
-          </td>
-        </tr>
-      </table>
+      <div id="container" style="backgroundColor: yellow; margin: auto;">
+        <div id="ldBar" class="ldBar label-center" data-preset="fan" data-value="60" style="width:80%; height:80%; margin: auto;"></div>
+        <style type="text/css">
+          .ldBar .ldBar-label {
+            font-family: 'sans-serif';
+            font-size: 1em;
+            font-weight: 600;
+            stroke-width: 3;
+            font-family: sans-serif;
+          }
+          .ldBar path.mainline { stroke-width: 3; stroke: #09f; stroke-linecap: round }
+          .ldBar path.baseline { stroke-width: 3; stroke: #f1f2f3; stroke-linecap: round }
+          .ldBar-label {
+            color: red;
+            font-family: sans-serif;
+            font-weight: 600;
+            margin-top: 0.7em;
+          }
+          .ldBar {
+            position: relative;
+            font-size: 1em;  /* Size of Percentage font  */
+            font-family: sans-serif;
+          }
+        </style>
+        <div id="chargingIndicatorDiv" style="text-align: center;">
+          <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: visible; width: 10em;" />
+        </div>
+      </div>
+
+      <div id="settingsDiv" style="position: absolute; width: 100%; height: 90px; bottom: 0;">
+        <p id="settingsP">
+          Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
+          <br />
+          <select id="manualChimes" onChange="manualDing(this)">
+            <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
+            <option value="fullcharge">Play FULL CHARGE Chime</option>
+            <option value="upper">Play CHARGING Chime</option>
+            <option value="downer">Play NOT CHARGING Chime</option>
+            <option value="nochange">Play NO CHANGE Chime</option>
+          </select>
+          <br />
+            Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.6" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
+        </p>
+      </div>
 
 
     </body>
@@ -237,20 +228,20 @@
       }
 
       function onOChange()   {
-        var topTrHeight = screen.height - 200;
+        var topTrHeight = screen.availHeight - 90;
         var q = "document.getElementById('container').style.height = \"" + Math.round(topTrHeight) + "px\"";
-//        alert (q);
+        alert (q);
         eval(q);
 
         ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
 
         if (SIZE == "small")   {
-          document.getElementById('chargingIndicator').style.width = "10em";
+          document.getElementById('chargingIndicator').style.width = "8em";
           if (ORIENT == "portrait")   {
             document.getElementById('ldBar').style.fontSize = "16px";
           }
           else   {  // ORIENT is landscape
-            var containerTopMargin = (topTrHeight - 100) / 2;
+            var containerTopMargin = (screen.availHeight - 90) / 2;
             var x = "document.getElementById('container').style.topMargin = \"" + containerTopMargin + "px\"";
             alert (x);
             eval(x);
