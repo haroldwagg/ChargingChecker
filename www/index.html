@@ -191,6 +191,18 @@
       const fontSize = Number(window.getComputedStyle(document.body).getPropertyValue('font-size').match(/\d+/)[0]);
 
 //
+//  init
+//
+      document.addEventListener("deviceready", starter, false);
+      window.addEventListener("orientationchange", onOChange);
+
+      function doSpeakPercent()   {
+        tick();
+      }
+
+      starter();
+
+//
 //  utils
 //
       function starter()   {
@@ -301,17 +313,5 @@
         brightnessStatus = "DIM";
       }
 
-
-//
-//  init
-//
-      document.addEventListener("deviceready", starter, false);
-      window.addEventListener("orientationchange", onOChange, true);
-
-      function doSpeakPercent()   {
-        tick();
-      }
-
-      starter();
   </script>
   </html>
