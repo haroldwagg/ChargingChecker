@@ -130,32 +130,33 @@
       <table id="thisTable" style="width: 100%;">
         <tr>
           <td align="center" valign="middle">
-
-            <div id="ldBar" class="ldBar label-center" data-preset="fan" data-value="60" style="width:80%; height:80%; margin: auto;"></div>
-            <style type="text/css">
-              .ldBar .ldBar-label {
-                font-family: 'sans-serif';
-                font-size: 1em;
-                font-weight: 600;
-                stroke-width: 3;
-                font-family: sans-serif;
-              }
-              .ldBar path.mainline { stroke-width: 3; stroke: #09f; stroke-linecap: round }
-              .ldBar path.baseline { stroke-width: 3; stroke: #f1f2f3; stroke-linecap: round }
-              .ldBar-label {
-                color: red;
-                font-family: sans-serif;
-                font-weight: 600;
-                margin-top: 0.3em;
-              }
-              .ldBar {
-                position: relative;
-                font-size: 1em;  /* Size of Percentage font  */
-                font-family: sans-serif;
-              }
-            </style>
-            <div id="chargingIndicatorDiv" style="text-align: center;">
-              <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: visible; width: 10em;" />
+            <div id="container" style="backgroundColor: yellow; height: 400px; width: 400px; margin: auto;">
+              <div id="ldBar" class="ldBar label-center" data-preset="fan" data-value="60" style="width:80%; height:80%; margin: auto;"></div>
+              <style type="text/css">
+                .ldBar .ldBar-label {
+                  font-family: 'sans-serif';
+                  font-size: 1em;
+                  font-weight: 600;
+                  stroke-width: 3;
+                  font-family: sans-serif;
+                }
+                .ldBar path.mainline { stroke-width: 3; stroke: #09f; stroke-linecap: round }
+                .ldBar path.baseline { stroke-width: 3; stroke: #f1f2f3; stroke-linecap: round }
+                .ldBar-label {
+                  color: red;
+                  font-family: sans-serif;
+                  font-weight: 600;
+                  margin-top: 0.3em;
+                }
+                .ldBar {
+                  position: relative;
+                  font-size: 1em;  /* Size of Percentage font  */
+                  font-family: sans-serif;
+                }
+              </style>
+              <div id="chargingIndicatorDiv" style="text-align: center;">
+                <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: visible; width: 10em;" />
+              </div>
             </div>
           </td>
         </tr>
@@ -210,6 +211,12 @@
 //        alert(fontSize);
 //        alert(Math.round(screen.width / fontSize));
         getScreenSize();
+
+        var topTrHeight = screen.height - 200;
+        var q = "document.getElementById('container').style.height = \"" + topTrHeight + "px\"";
+        alert (q);
+        eval(q);
+
         onOChange();
         setInterval(tick, 1000);
       }
