@@ -239,24 +239,10 @@
       function onOChange()   {
         var topTrHeight = screen.height - 200;
         var q = "document.getElementById('container').style.height = \"" + topTrHeight + "px\"";
-        alert (q);
+//        alert (q);
         eval(q);
 
         ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
-//        var h = "document.getElementById(\"numberDiv\").style.fontSize = \"" + Math.round(screen.width / fontSize / 1.75) + "em\"";
-//        alert(h);
-//        eval(h);
-//          var i = "document.getElementById(\"pct\").style.fontSize = \"" + Math.round(screen.width / fontSize / 1.75) + "em\"";
-//        alert(i);
-//        eval(i);
-//        document.getElementById("pct").style.fontSize = ".5em";
-//
-//        if (ORIENT == "portrait")   {
-//          document.getElementById("numberDiv").style.width = "100%";
-//        }
-//        else   {
-//          document.getElementById("numberDiv").style.width = "50%";
-//        }
 
         if (SIZE == "small")   {
           document.getElementById('chargingIndicator').style.width = "10em";
@@ -266,6 +252,7 @@
           else   {  // ORIENT is landscape
             document.getElementById('ldBar').style.fontSize = "16px";
             document.getElementById('chargingIndicator').style.width = "7em";
+            document.getElementById('chargingIndicator').style.topMargin = "3em";
           }
 
         }
