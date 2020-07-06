@@ -238,7 +238,7 @@
 
       function onOChange()   {
         var topTrHeight = screen.height - 200;
-        var q = "document.getElementById('container').style.height = \"" + topTrHeight + "px\"";
+        var q = "document.getElementById('container').style.height = \"" + Math.round(topTrHeight) + "px\"";
 //        alert (q);
         eval(q);
 
@@ -250,6 +250,12 @@
             document.getElementById('ldBar').style.fontSize = "16px";
           }
           else   {  // ORIENT is landscape
+            var containerTopMargin = (topTrHeight - 300) / 2;
+            var x = "document.getElementById('container').style.topMargin = \"" + containerTopMargin + "px\"";
+            alert (x);
+            eval(x);
+
+
             document.getElementById('ldBar').style.fontSize = "16px";
             document.getElementById('chargingIndicator').style.width = "7em";
             document.getElementById('container').style.topMargin = "70px";
