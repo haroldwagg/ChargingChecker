@@ -174,7 +174,6 @@
 //        alert(Math.round(screen.width / fontSize));
     getScreenSize();
     onOChange();
-    setInterval(tick, 1000);
   }
 
   function getScreenSize()   {
@@ -197,8 +196,6 @@
 
   function onOChange()   {
     ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
-
-//    doScreenSpecs();
 
     getScreenSize();
 
@@ -238,6 +235,7 @@
 
   }
 
+  alert("screen.height = " + screen.height + "\nscreen.availHeight = " + screen.availHeight + "\nwindow.innerHeight = " + window.innerHeight + "\ndocument.body.clientHeight = " + document.body.clientHeight + "\nwindow.outerHeight = " + window.outerHeight + "\n\nscreen.width = " + screen.width + "\nscreen.availWidth = " + screen.availWidth + "\nwindow.innerWidth = " + window.innerWidth + "\ndocument.body.clientWidth = " + document.body.clientWidth + "\nwindow.outerWidth = " + window.outerWidth);
 
 
   bar = new ProgressBar.Circle(container, {
