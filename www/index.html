@@ -303,6 +303,7 @@
       PLUGGED_STATUS = battery.charging;
 
       battery.onchargingchange = function() {
+        PLUGGED_STATUS = battery.charging;
         if (PLUGGED_STATUS)   {
           doDing('disconnected', true);
           document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
