@@ -68,6 +68,23 @@
   var PLUGGED_STATUS;
   var firstTime = true;
 
+  var UP_DING = "audio/UpBeep.mp3";
+  var DOWN_DING = "audio/DownBeep.mp3";
+  var NC_DING = "audio/NoChangeBeep.mp3";
+  var CHARGED_DING = "audio/FullCharge.mp3";
+  var COUNTDOWN_FILE = "audio/countwav.wav";
+  var CHARGING_FILE = "audio/Charging.mp3";
+  var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3";
+  var CHARGED_FILE = "audio/Charged.mp3";
+  var DING_DELAY = 240000;
+  var SPEAK_PERCENT = false;
+  var MEDIA_READY = false;
+  var safeToDing = true;
+  var failSafe = 0;
+  var CURRENT_VOLUME = 0.6;
+  var SPEAK_PERCENT;
+
+
   var myColors = [
   "#ff0000",
   "#ff0500",
@@ -302,23 +319,6 @@
       batteryValue = Math.round(battery.level * 100);
       PLUGGED_STATUS = battery.charging;
 
-      battery.onchargingchange = function() {
-        PLUGGED_STATUS = battery.charging;
-        if (PLUGGED_STATUS)   {
-          doDing('disconnected', true);
-          document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
-        }
-        else   {
-          doDing('charging', true);
-          document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
-        }
-      };
-
-      battery.onlevelchange = function() {
-        batteryValue = Math.round(battery.level * 100);
-        bar.animate(batteryValue/100);
-      };
-
       if (firstTime)   {
         firstTime = false;
         bar.animate(batteryValue/100);
@@ -329,16 +329,77 @@
           document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
         }
 
-      }
+        battery.onchargingchange = function() {
+          PLUGGED_STATUS = battery.charging;
+          if (PLUGGED_STATUS)   {
+            doDing('disconnected', true);
+            document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
+          }
+          else   {
+            doDing('charging', true);
+            document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
+          }
+        };
 
+        battery.onlevelchange = function() {
+          batteryValue = Math.round(battery.level * 100);
+          bar.animate(batteryValue/100);
+        };
+      }
     }
   )
   };
 
   function doDing(dir, noPercent)   {
+    var dingFile = "";
+    var my_dinger;
+    noPercent = noPercent || false;
 
+    if (safeToDing)   {
+      safeToDing = false;
+      if (SPEAK_PERCENT && ! noPercent)   {
+        var Percenter = setTimeout(talkPercent, 1250);
+      }
 
+      if (dir == "disconnected")   {
+        dingFile = this.root + DISCONNECTED_FILE;
+      }
+      else if (dir == "charging")   {
+        dingFile = this.root + CHARGING_FILE;
+      }
+      else if (dir == "downer")   {
+        dingFile = this.root + DOWN_DING;
+      }
+      else if (dir == "upper")   {
+        dingFile = this.root + UP_DING;
+      }
+      else if (dir == "nochange")   {
+        dingFile = this.root + NC_DING;
+      }
+      else if (dir == "fullcharge")   {
+        dingFile = this.root + CHARGED_DING;
+      }
+
+      my_dinger = new Media(dingFile,
+          ignoreError(),
+          ignoreError()
+        );
+
+      my_dinger.play({ playAudioWhenScreenIsLocked : true });
+      my_dinger.setVolume(CURRENT_VOLUME);
+
+      var Timeouter = setTimeout(function()   {
+        my_dinger.stop();
+        my_dinger.release();
+        safeToDing = true;
+      }, 2000);
+    }
   }
+
+  function manualDing(sel)   {
+    doDing(sel.options[sel.selectedIndex].value, true);
+  }
+
 
 
 
