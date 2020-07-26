@@ -64,7 +64,9 @@
 
   var value;
   var bar;
-  var batteryValue = 89;
+  var batteryValue;
+  var PLUGGED_STATUS;
+
   var myColors = [
   "#ff0000",
   "#ff0500",
@@ -273,9 +275,53 @@
   bar.text.style.fontWeight = 'bold';
   bar.text.style.color = '#cccccc';
 
- bar.animate(batteryValue/100);  // Number from 0.0 to 1.0
+//  bar.animate(batteryValue/100);  // Number from 0.0 to 1.0
+
+  function displayDelayTime(theValue)   {
+    let tempp = theValue / 18.258;
+    let tempp2 = tempp * tempp * 11.112;
+    var minuteDelay = Math.floor(tempp2);
+
+    if (minuteDelay == 0)   {
+      document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+//          clearTimeout(dingLooper);
+    }
+    else   {
+      document.getElementById('delayMsg').innerHTML = minuteDelay + " mins";
+//          DING_DELAY = minuteDelay * 60 * 1000;
+//          clearTimeout(dingLooper);
+//          dingTimer("none");
+    }
+  }
+
+  function doAReading()   {
+    navigator.getBattery().then(function(battery) {
+      batteryValue = Math.round(battery.level * 100);
+      PLUGGED_STATUS = battery.charging;
+
+      battery.onchargingchange = function() {
+        if (PLUGGED_STATUS)   {
+          doDing('disconnected', true);
+          document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
+        }
+        else   {
+          doDing('charging', true);
+          document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
+        }
+      };
+
+      battery.onlevelchange = function() {
+        batteryValue = Math.round(battery.level * 100);
+        bar.animate(batteryValue/100);
+      };
+    }
+  )
+  };
+
+  function doDing(dir, noPercent)   {
 
 
+  }
 
 
 
