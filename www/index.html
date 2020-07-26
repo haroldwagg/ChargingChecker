@@ -192,10 +192,39 @@
   window.addEventListener("orientationchange", onOChange);
 
   function starter()   {
-//        alert(fontSize);
-//        alert(Math.round(screen.width / fontSize));
+    window.plugins.insomnia.keepAwake();
     getScreenSize();
-    onOChange();
+//    onOChange();
+    ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
+
+    if (ORIENT == "landscape")   {
+      var useableHeight = window.innerHeight - 105;
+      var containerDim = Math.floor(useableHeight - 350);
+      containerDim = Math.floor(containerDim / ratio);
+      document.getElementById('container').style.marginTop = '.75em';
+
+      if (SIZE == "small")   {
+        document. getElementById('chargingIndicator').style.width = '4em';
+        document. getElementById('chargingIndicator').style.marginTop = '10px';
+      }
+    }
+    else   {  // portrait
+      var useableWidth = screen.width;
+      var containerDim = Math.floor(useableWidth);
+      containerDim = Math.floor((containerDim / ratio) * 1.2);
+      if (SIZE == "small")   {
+        document. getElementById('chargingIndicator').style.width = '7em';
+      }
+      var tMargin = (screen.height - 270 - containerDim) / 2;
+
+      var v = "document.getElementById('container').style.marginTop = '" + Math.floor(tMargin) + "px'";
+      eval(v);
+    }
+
+    var s = "document.getElementById('container').style.width = '" + containerDim + "px'";
+    eval(s)
+    var t = "document.getElementById('container').style.height = '" + containerDim + "px'";
+    eval(t);
   }
 
   function getScreenSize()   {
@@ -223,7 +252,6 @@
 
     if (ORIENT == "landscape")   {
       var useableHeight = window.innerHeight - 105;
-//      alert ("Height: " + useableHeight);
       var containerDim = Math.floor(useableHeight - 350);
       containerDim = Math.floor(containerDim / ratio);
       document.getElementById('container').style.marginTop = '.75em';
@@ -232,14 +260,11 @@
         document. getElementById('chargingIndicator').style.width = '4em';
         document. getElementById('chargingIndicator').style.marginTop = '10px';
       }
-
     }
     else   {  // portrait
-//      var useableWidth = window.innerWidth;
-//      alert ("Width: " + useableWidth);
       var useableWidth = screen.width;
       var containerDim = Math.floor(useableWidth);
-      containerDim = Math.floor((containerDim / ratio) * 1.25);
+      containerDim = Math.floor((containerDim / ratio) * 1.2);
       if (SIZE == "small")   {
         document. getElementById('chargingIndicator').style.width = '7em';
       }
@@ -248,13 +273,11 @@
       var v = "document.getElementById('container').style.marginTop = '" + Math.floor(tMargin) + "px'";
       eval(v);
     }
-      var s = "document.getElementById('container').style.width = '" + containerDim + "px'";
-//      alert (s);
-      eval(s)
-      var t = "document.getElementById('container').style.height = '" + containerDim + "px'";
-//      alert (t);
-      eval(t);
 
+    var s = "document.getElementById('container').style.width = '" + containerDim + "px'";
+    eval(s)
+    var t = "document.getElementById('container').style.height = '" + containerDim + "px'";
+    eval(t);
   }
 
 //  alert("screen.height = " + screen.height + "\nscreen.availHeight = " + screen.availHeight + "\nwindow.innerHeight = " + window.innerHeight + "\ndocument.body.clientHeight = " + document.body.clientHeight + "\nwindow.outerHeight = " + window.outerHeight + "\n\nscreen.width = " + screen.width + "\nscreen.availWidth = " + screen.availWidth + "\nwindow.innerWidth = " + window.innerWidth + "\ndocument.body.clientWidth = " + document.body.clientWidth + "\nwindow.outerWidth = " + window.outerWidth);
