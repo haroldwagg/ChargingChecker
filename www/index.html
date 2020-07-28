@@ -193,10 +193,13 @@
   window.addEventListener("orientationchange", onOChange);
 
   function starter()   {
-    window.plugins.insomnia.keepAwake();
+alert('starter');
+//    window.plugins.insomnia.keepAwake();
     getScreenSize();
     onOChange();
-    initializeBar()
+alert('after ochange');
+    initializeBar();
+  alert('after initializeBar');
   }
 
   function initializeBar()   {
