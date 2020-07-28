@@ -68,7 +68,6 @@
   var bar;
   var batteryValue;
   var PLUGGED_STATUS;
-  var firstTime = true;
 
   var UP_DING = "audio/UpBeep.mp3";
   var DOWN_DING = "audio/DownBeep.mp3";
@@ -187,7 +186,7 @@
     "#00f200",
     "#00f200",
     "#00f200",
-    "#00f200"
+    "#0000ee"
   ];
 
 //  document.addEventListener("deviceready", starter, false);
@@ -195,12 +194,9 @@
   window.addEventListener("orientationchange", onOChange);
 
   function starter()   {
-// alert('starter');
     window.plugins.insomnia.keepAwake();
     onOChange();
-// alert('after ochange');
     initializeBar();
-//  alert('after initializeBar');
   }
 
   function initializeBar()   {
@@ -316,6 +312,7 @@
   }
 
   function doAReading()   {
+alert('doAReading');
     navigator.getBattery().then(function(battery) {
       batteryValue = Math.round(battery.level * 100);
       PLUGGED_STATUS = battery.charging;
@@ -330,13 +327,14 @@
         document.getElementById('chargingIndicator').style.visibility = "visible";
 
         battery.onchargingchange = function() {
+alert('onchargingchange');
           PLUGGED_STATUS = battery.charging;
           if (PLUGGED_STATUS)   {
-            doDing('disconnected', true);
+            doDing('charging', true);
             document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
           }
           else   {
-            doDing('charging', true);
+            doDing('disconnected', true);
             document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
           }
         };
@@ -350,6 +348,9 @@
   }
 
   function doDing(dir, noPercent)   {
+
+    alert(dir); return;
+    
     var dingFile = "";
     var my_dinger;
     noPercent = noPercent || false;
