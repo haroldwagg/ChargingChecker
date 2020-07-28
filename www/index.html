@@ -34,7 +34,7 @@
 
 <div id="container"></div>
 <div id="chargingIndicatorDiv" style="text-align: center;">
-  <img src="newChargingIcon.png" id="chargingIndicator" style="visibility: visible; width: 7em; margin-top: 20px;" />
+  <img src="newChargingIcon.png" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px;" />
 </div>
 
 <div id="settingsDiv">
@@ -184,46 +184,57 @@
     "#00f200",
     "#00f200",
     "#00f200",
+    "#00f200",
     "#00f200"
   ];
 
-  document.addEventListener("deviceready", starter, false);
+//  document.addEventListener("deviceready", starter, false);
+  window.onload = setTimeout(function() {starter();}, 1000);
   window.addEventListener("orientationchange", onOChange);
 
   function starter()   {
     window.plugins.insomnia.keepAwake();
     getScreenSize();
-//    onOChange();
-    ORIENT = (screen.height > screen.width) ? "portrait" : "landscape";
+    onOChange();
+    initializeBar()
+  }
 
-    if (ORIENT == "landscape")   {
-      var useableHeight = window.innerHeight - 105;
-      var containerDim = Math.floor(useableHeight - 350);
-      containerDim = Math.floor(containerDim / ratio);
-      document.getElementById('container').style.marginTop = '.75em';
+  function initializeBar()   {
+    bar = new ProgressBar.Circle(container, {
+      color: '#eee',
+      // This has to be the same size as the maximum width to
+      // prevent clipping
+      strokeWidth: 8,
+      trailWidth: 3,
+      // easing: 'easeInOut',
+      easing: 'easeInOut',
+      duration: 5400,
+      text: {
+        autoStyleContainer: false
+      },
+      from: { color: '#aaa', width: 3 },
+      to: { color: '#333', width: 8 },
+      // Set default step function for all animate calls
+      step: function(state, circle) {
+        value = Math.round(circle.value() * 100);
 
-      if (SIZE == "small")   {
-        document. getElementById('chargingIndicator').style.width = '4em';
-        document. getElementById('chargingIndicator').style.marginTop = '10px';
+        circle.path.setAttribute('stroke', myColors[value]);
+        circle.path.setAttribute('stroke-width', state.width);
+
+         if (value === 0) {
+          circle.setText('');
+        } else {
+          circle.setText(value + "%");
+        }
       }
-    }
-    else   {  // portrait
-      var useableWidth = screen.width;
-      var containerDim = Math.floor(useableWidth);
-      containerDim = Math.floor((containerDim / ratio) * 1.2);
-      if (SIZE == "small")   {
-        document. getElementById('chargingIndicator').style.width = '7em';
-      }
-      var tMargin = (screen.height - 270 - containerDim) / 2;
+    });
+    bar.text.style.fontFamily = 'sans-serif';
+    bar.text.style.fontSize = '4rem';
+    bar.text.style.fontWeight = 'bold';
+    bar.text.style.color = '#cccccc';
 
-      var v = "document.getElementById('container').style.marginTop = '" + Math.floor(tMargin) + "px'";
-      eval(v);
-    }
+    doAReading();
 
-    var s = "document.getElementById('container').style.width = '" + containerDim + "px'";
-    eval(s)
-    var t = "document.getElementById('container').style.height = '" + containerDim + "px'";
-    eval(t);
   }
 
   function getScreenSize()   {
@@ -234,8 +245,6 @@
     else   {
       SIZE = "small";
     }
-//        alert("SIZE is " + SIZE);
-//        doScreenSpecs();
   }
 
   function doScreenSpecs()  {
@@ -282,40 +291,6 @@
 //  alert("screen.height = " + screen.height + "\nscreen.availHeight = " + screen.availHeight + "\nwindow.innerHeight = " + window.innerHeight + "\ndocument.body.clientHeight = " + document.body.clientHeight + "\nwindow.outerHeight = " + window.outerHeight + "\n\nscreen.width = " + screen.width + "\nscreen.availWidth = " + screen.availWidth + "\nwindow.innerWidth = " + window.innerWidth + "\ndocument.body.clientWidth = " + document.body.clientWidth + "\nwindow.outerWidth = " + window.outerWidth);
 
 
-  bar = new ProgressBar.Circle(container, {
-    color: '#eee',
-    // This has to be the same size as the maximum width to
-    // prevent clipping
-    strokeWidth: 8,
-    trailWidth: 3,
-    // easing: 'easeInOut',
-    easing: 'easeInOut',
-    duration: 5400,
-    text: {
-      autoStyleContainer: false
-    },
-    from: { color: '#aaa', width: 3 },
-    to: { color: '#333', width: 8 },
-    // Set default step function for all animate calls
-    step: function(state, circle) {
-      value = Math.round(circle.value() * 100);
-
-      circle.path.setAttribute('stroke', myColors[value]);
-      circle.path.setAttribute('stroke-width', state.width);
-
-       if (value === 0) {
-        circle.setText('');
-      } else {
-        circle.setText(value + "%");
-      }
-    }
-  });
-  bar.text.style.fontFamily = 'sans-serif';
-  bar.text.style.fontSize = '4rem';
-  bar.text.style.fontWeight = 'bold';
-  bar.text.style.color = '#cccccc';
-
-  doAReading();
 
 //  bar.animate(batteryValue/100);  // Number from 0.0 to 1.0
 
@@ -341,8 +316,6 @@
       batteryValue = Math.round(battery.level * 100);
       PLUGGED_STATUS = battery.charging;
 
-      if (firstTime)   {
-        firstTime = false;
         bar.animate(batteryValue/100);
         if (PLUGGED_STATUS)   {
           document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
@@ -350,6 +323,7 @@
         else   {
           document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
         }
+        document.getElementById('chargingIndicator').style.visibility = "visible";
 
         battery.onchargingchange = function() {
           PLUGGED_STATUS = battery.charging;
@@ -368,9 +342,8 @@
           bar.animate(batteryValue/100);
         };
       }
-    }
-  )
-  };
+    )
+  }
 
   function doDing(dir, noPercent)   {
     var dingFile = "";
