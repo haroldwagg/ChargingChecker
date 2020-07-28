@@ -36,7 +36,7 @@
 
 <div id="container"></div>
 <div id="chargingIndicatorDiv" style="text-align: center;">
-  <img src="newChargingIcon.png" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px;" />
+  <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px;" />
 </div>
 
 <div id="settingsDiv">
@@ -317,14 +317,14 @@
       PLUGGED_STATUS = battery.charging;
       bar.animate(batteryValue/100);
 
-//        if (PLUGGED_STATUS)   {
-//          document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
-//        }
-//        else   {
-//          document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
-//        }
+      if (PLUGGED_STATUS)   {
+        document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
+      }
+      else   {
+        document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
+      }
 
-        document.getElementById('chargingIndicator').style.visibility = "visible";
+      document.getElementById('chargingIndicator').style.visibility = "visible";
 
         battery.onchargingchange = function() {
           PLUGGED_STATUS = battery.charging;
@@ -343,10 +343,12 @@
           bar.animate(batteryValue/100);
         };
       }
-    )
+    );
   }
 
   function doDing(dir, noPercent)   {
+alert(dir);
+
     var dingFile = "";
     var my_dinger;
     noPercent = noPercent || false;
