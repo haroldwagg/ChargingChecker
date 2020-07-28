@@ -315,14 +315,15 @@
     navigator.getBattery().then(function(battery) {
       batteryValue = Math.round(battery.level * 100);
       PLUGGED_STATUS = battery.charging;
+      bar.animate(batteryValue/100);
 
-        bar.animate(batteryValue/100);
-        if (PLUGGED_STATUS)   {
-          document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
-        }
-        else   {
-          document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
-        }
+//        if (PLUGGED_STATUS)   {
+//          document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
+//        }
+//        else   {
+//          document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
+//        }
+
         document.getElementById('chargingIndicator').style.visibility = "visible";
 
         battery.onchargingchange = function() {
