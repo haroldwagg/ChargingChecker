@@ -312,7 +312,6 @@
   }
 
   function doAReading()   {
-alert('doAReading');
     navigator.getBattery().then(function(battery) {
       batteryValue = Math.round(battery.level * 100);
       PLUGGED_STATUS = battery.charging;
@@ -327,7 +326,6 @@ alert('doAReading');
         document.getElementById('chargingIndicator').style.visibility = "visible";
 
         battery.onchargingchange = function() {
-alert('onchargingchange');
           PLUGGED_STATUS = battery.charging;
           if (PLUGGED_STATUS)   {
             doDing('charging', true);
@@ -348,9 +346,6 @@ alert('onchargingchange');
   }
 
   function doDing(dir, noPercent)   {
-
-    alert(dir); return;
-    
     var dingFile = "";
     var my_dinger;
     noPercent = noPercent || false;
