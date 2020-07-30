@@ -374,19 +374,18 @@
       else if (dir == "fullcharge")   {
         dingFile = this.root + CHARGED_DING;
       }
-      alert('Dingfile is ' + dingFile);
-      my_dinger = new Media(CHARGED_DING,
-//          ignoreError(),
-//          ignoreError()
+//      alert('Dingfile is ' + dingFile);
+      my_dinger = new Media(dingFile,
+          ignoreError(),
+          ignoreError()
+      );
 
 // success callback
- function () { alert('success'); },
- // error callback
- function (err) { alert('ERROR: :Audio Error: ' + JSON.stringify(err)); }
+// function () { alert('success'); },
+// error callback
+// function (err) { alert('ERROR: :Audio Error: ' + JSON.stringify(err)); }
 
-
-        );
- alert('here3 - ' + JSON.stringify(my_dinger));
+// alert('here3 - ' + JSON.stringify(my_dinger));
       my_dinger.play({ playAudioWhenScreenIsLocked : true });
       my_dinger.setVolume(CURRENT_VOLUME);
 // alert('setTimeout');
