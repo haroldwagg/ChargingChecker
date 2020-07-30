@@ -194,7 +194,6 @@
   window.addEventListener("orientationchange", onOChange);
 
   function starter()   {
-    alert('starter');
     window.plugins.insomnia.keepAwake();
     onOChange();
     initializeBar();
@@ -339,6 +338,7 @@
 
   function doDing(dir, noPercent)   {
 // alert(dir);
+return;
 
     var dingFile = "";
     var my_dinger;
