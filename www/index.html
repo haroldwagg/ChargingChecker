@@ -235,7 +235,7 @@
       }
     });
     bar.text.style.fontFamily = 'sans-serif';
-    bar.text.style.fontSize = '4rem';
+
     bar.text.style.fontWeight = 'bold';
     bar.text.style.color = '#cccccc';
 
@@ -287,6 +287,14 @@
       var v = "document.getElementById('container').style.marginTop = '" + Math.floor(tMargin) + "px'";
       eval(v);
     }
+
+    if (containerDim < 500)   {
+      bar.text.style.fontSize = '4rem';
+    }
+    else   {
+      bar.text.style.fontSize = '7.5rem';
+    }
+
 
     var s = "document.getElementById('container').style.width = '" + containerDim + "px'";
     eval(s)
