@@ -80,6 +80,8 @@
   var CHARGING_FILE = "audio/Charging.mp3";
   var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3";
   var CHARGED_FILE = "audio/Charged.mp3";
+  var percentDingFile = this.root + COUNTDOWN_FILE;
+
   var DING_DELAY = 240000;
   var SPEAK_PERCENT = false;
   var MEDIA_READY = false;
@@ -384,10 +386,10 @@
 
 
         );
-alert('here3');
+ alert('here3 - ' + JSON.stringify(my_dinger));
       my_dinger.play({ playAudioWhenScreenIsLocked : true });
       my_dinger.setVolume(CURRENT_VOLUME);
-alert('setTimeout');
+// alert('setTimeout');
       var Timeouter = setTimeout(function()   {
         my_dinger.stop();
         my_dinger.release();
