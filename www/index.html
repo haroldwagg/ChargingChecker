@@ -36,7 +36,7 @@
 
 <div id="container"></div>
 <div id="chargingIndicatorDiv" style="text-align: center;">
-  <img src="nochargingINACTIVE.png" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px;" />
+  <img src="" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px;" />
 </div>
 
 <div id="settingsDiv">
@@ -326,17 +326,7 @@
 
       document.getElementById('chargingIndicator').style.visibility = "visible";
 
-        battery.onchargingchange = function() {
-          PLUGGED_STATUS = battery.charging;
-          if (PLUGGED_STATUS)   {
-            doDing('charging', true);
-            document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
-          }
-          else   {
-            doDing('disconnected', true);
-            document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
-          }
-        };
+        battery.onchargingchange = onChargeChg();
 
         battery.onlevelchange = function() {
           batteryValue = Math.round(battery.level * 100);
@@ -347,7 +337,7 @@
   }
 
   function doDing(dir, noPercent)   {
-alert(dir);
+// alert(dir);
 
     var dingFile = "";
     var my_dinger;
@@ -396,6 +386,20 @@ alert(dir);
 
   function manualDing(sel)   {
     doDing(sel.options[sel.selectedIndex].value, true);
+  }
+
+  function onChargeChg()   {
+    navigator.getBattery().then(function(battery) {
+      PLUGGED_STATUS = battery.charging;
+      if (battery.charging)   {
+        doDing('charging', true);
+        document.getElementById('chargingIndicator').src = "chargedACTIVE.png";
+      }
+      else   {
+        doDing('disconnected', true);
+        document.getElementById('chargingIndicator').src = "nochargingINACTIVE.png";
+      }
+    };
   }
 
 
