@@ -201,8 +201,8 @@
 
   function starter()   {
     window.plugins.insomnia.keepAwake();
-    onOChange();
     initializeBar();
+    onOChange();
   }
 
   function initializeBar()   {
@@ -235,7 +235,7 @@
       }
     });
     bar.text.style.fontFamily = 'sans-serif';
-
+    bar.text.style.fontSize = '4rem';
     bar.text.style.fontWeight = 'bold';
     bar.text.style.color = '#cccccc';
 
