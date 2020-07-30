@@ -327,7 +327,7 @@
 
       document.getElementById('chargingIndicator').style.visibility = "visible";
 
-        battery.onchargingchange = onChargeChg();
+        battery.onchargingchange = function() { onChargeChg(); };
 
         battery.onlevelchange = function() {
           batteryValue = Math.round(battery.level * 100);
