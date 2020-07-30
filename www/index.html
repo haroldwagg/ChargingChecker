@@ -64,6 +64,9 @@
   var ORIENT;
   var ratio = window.devicePixelRatio || 1;
 
+  var p = window.location.pathname;
+  this.root = p.substring(0, p.lastIndexOf('/')) + "/";
+
   var value;
   var bar;
   var batteryValue;
@@ -84,6 +87,7 @@
   var failSafe = 0;
   var CURRENT_VOLUME = 0.6;
   var SPEAK_PERCENT;
+  var my_percent_dinger = "undefined";
 
   var myColors = [
     "#ff0000",
@@ -337,8 +341,8 @@
   }
 
   function doDing(dir, noPercent)   {
-// alert(dir);
-return;
+ // alert('ding! - ' + dir + ' - STD: ' + safeToDing);
+
 
     var dingFile = "";
     var my_dinger;
@@ -368,15 +372,22 @@ return;
       else if (dir == "fullcharge")   {
         dingFile = this.root + CHARGED_DING;
       }
+      alert('Dingfile is ' + dingFile);
+      my_dinger = new Media(CHARGED_DING,
+//          ignoreError(),
+//          ignoreError()
 
-      my_dinger = new Media(dingFile,
-          ignoreError(),
-          ignoreError()
+// success callback
+ function () { alert('success'); },
+ // error callback
+ function (err) { alert('ERROR: :Audio Error: ' + JSON.stringify(err)); }
+
+
         );
-
+alert('here3');
       my_dinger.play({ playAudioWhenScreenIsLocked : true });
       my_dinger.setVolume(CURRENT_VOLUME);
-
+alert('setTimeout');
       var Timeouter = setTimeout(function()   {
         my_dinger.stop();
         my_dinger.release();
