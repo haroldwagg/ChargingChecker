@@ -81,6 +81,7 @@
   var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3";
   var CHARGED_FILE = "audio/Charged.mp3";
   var percentDingFile = this.root + COUNTDOWN_FILE;
+  var my_dinger;
 
   var DING_DELAY = 240000;
   var SPEAK_PERCENT = false;
@@ -351,15 +352,14 @@
   }
 
   function doDing(dir, noPercent)   {
- // alert('ding! - ' + dir + ' - STD: ' + safeToDing);
-
+    return;
+ alert('ding! - ' + dir + ' - STD: ' + safeToDing);
 
     var dingFile = "";
-    var my_dinger;
     noPercent = noPercent || false;
 
     if (safeToDing)   {
-      safeToDing = false;
+      safeToDing = true;  // false;
       if (SPEAK_PERCENT && ! noPercent)   {
         var Percenter = setTimeout(talkPercent, 1250);
       }
@@ -382,8 +382,10 @@
       else if (dir == "fullcharge")   {
         dingFile = this.root + CHARGED_DING;
       }
-//      alert('Dingfile is ' + dingFile);
+  alert('(Before new Media) Dingfile is ' + dingFile);
       my_dinger = new Media(dingFile,
+//        function(){ alert('success'); },
+//        function (err) { alert('ERROR: :Audio Error: ' + JSON.stringify(err)); }
           ignoreError(),
           ignoreError()
       );
@@ -393,10 +395,10 @@
 // error callback
 // function (err) { alert('ERROR: :Audio Error: ' + JSON.stringify(err)); }
 
-// alert('here3 - ' + JSON.stringify(my_dinger));
+  alert('here3 - ' + JSON.stringify(my_dinger));
       my_dinger.play({ playAudioWhenScreenIsLocked : true });
       my_dinger.setVolume(CURRENT_VOLUME);
-// alert('setTimeout');
+  alert('setTimeout');
       var Timeouter = setTimeout(function()   {
         my_dinger.stop();
         my_dinger.release();
@@ -422,6 +424,16 @@
       }
     });
   }
+
+  function doSpeakPercent()   {
+    SPEAK_PERCENT = document.getElementById('speakCheck').checked ? true : false;
+  }
+
+  function setMediaFlag()   {
+    MEDIA_READY = true;
+  }
+
+
 
 
 
