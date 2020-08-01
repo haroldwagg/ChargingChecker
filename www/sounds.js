@@ -6,13 +6,13 @@ var sounds = {
     url : this.root + CHARGING_FILE
   },
   "downer" : {
-    url : "sounds/ping.mp3"
+    url : this.root + DOWN_DING
   },
   "upper" : {
-    url : "sounds/bump.mp3"
+    url : this.root + UP_DING
   },
   "nochange" : {
-    url : "sounds/jump.wav"
+    url : this.root + NC_DING
   },
   "fullcharge" : {
     url : this.root + CHARGED_DING

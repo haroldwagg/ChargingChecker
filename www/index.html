@@ -349,7 +349,7 @@
 
   function doDing(dir, noPercent)   {
 //    return;
- alert('ding! - ' + dir + ' - STD: ' + safeToDing);
+// alert('ding! - ' + dir + ' - STD: ' + safeToDing);
 
 //    var dingFile = "";
 //    noPercent = noPercent || false;
@@ -361,16 +361,16 @@
 //      }
 
       if (dir == "disconnected")   {
-        playSound("disconnected", { volume: 0.9 });
+        playSound("disconnected", { volume: CURRENT_VOLUME });
       }
       else if (dir == "charging")   {
-        playSound("charging", { volume: 0.9 });
+        playSound("charging", { volume: CURRENT_VOLUME });
       }
       else if (dir == "downer")   {
-        playSound("downer", { volume: 0.9 });
+        playSound("downer", { volume: CURRENT_VOLUME });
       }
       else if (dir == "upper")   {
-        playSound("upper", { volume: 0.9 });
+        playSound("upper", { volume: CURRENT_VOLUME });
       }
       else if (dir == "nochange")   {
         playSound("nochange", { volume: 0.9 });
