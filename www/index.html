@@ -204,8 +204,10 @@
 
   function starter()   {
     window.plugins.insomnia.keepAwake();
+    setTimeout(function() { processDings(); }, 5500);
     initializeBar();
     onOChange();
+//    document.getElementById("container").style.filter = "brightness(30%)";
   }
 
   function initializeBar()   {
