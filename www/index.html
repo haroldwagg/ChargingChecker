@@ -10,6 +10,7 @@
       height: 300px;
       position: relative;
       margin-top: 2em;
+      -webkit-transition: filter 2s ease;
     }
     body {
       background-color: #303030;
@@ -21,6 +22,7 @@
       height: 90px;
       background-color: #ccc;
       padding-bottom: 15px;
+      -webkit-transition: filter 2s ease;
     }
     #settingsP {
       text-align: center;
@@ -31,13 +33,14 @@
 <body background-color="#333333">
 
 
-<div id="container"></div>
-<div id="chargingIndicatorDiv" style="text-align: center;">
-  <img src="" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px;" />
-</div>
+<a onClick="doBrightScreen()"><div id="container"></div></a>
+<a onClick="doBrightScreen()"><div id="chargingIndicatorDiv" style="text-align: center;">
+  <img src="" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px; -webkit-transition: filter 2s ease;" />
+  <a onClick="doHelp()"><img src="help.png" id="helpButton" style="visibility: hidden; text-decoration: none; -webkit-transition: filter 2s ease;" /></a>
+</div></a>
 
 <div id="settingsDiv">
-  <p id="settingsP">
+  <a onClick="doBrightScreen()"><p id="settingsP">
     Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
     <br />
     <select id="manualChimes" onChange="manualDing(this)">
@@ -49,13 +52,13 @@
     </select>
     <br />
       Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.7" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
-  </p>
+  </p></a>
 
 </div>
 
 <script>
 
-
+  var DIM_DELAY = 120000;
   var SIZE;
   var ORIENT;
   var ratio = window.devicePixelRatio || 1;
@@ -67,6 +70,7 @@
   var bar;
   var batteryValue;
   var PLUGGED_STATUS;
+  var isDim = false;
 
   var UP_DING = "audio/UpBeep.mp3";
   var DOWN_DING = "audio/DownBeep.mp3";
@@ -88,6 +92,7 @@
   var SPEAK_PERCENT;
   var my_percent_dinger = "undefined";
   var dingLooper;
+  var dimTimer;
 
   var hasBeen100 = false;
   var the99count = 0;
@@ -205,9 +210,9 @@
   function starter()   {
     window.plugins.insomnia.keepAwake();
     setTimeout(function() { processDings(); }, 5500);
+    dimTimer = setTimeout(function() { doDimScreen(); }, DIM_DELAY);
     initializeBar();
     onOChange();
-//    document.getElementById("container").style.filter = "brightness(30%)";
   }
 
   function initializeBar()   {
@@ -295,9 +300,11 @@
 
     if (containerDim < 500)   {
       bar.text.style.fontSize = '4rem';
+      document.getElementById('helpButton').style.width = '3rem';
     }
     else   {
       bar.text.style.fontSize = '7.5rem';
+      document.getElementById('helpButton').style.width = '6rem';
     }
 
 
@@ -305,13 +312,16 @@
     eval(s)
     var t = "document.getElementById('container').style.height = '" + containerDim + "px'";
     eval(t);
+
+    document.getElementById('helpButton').style.position = 'absolute';
+    document.getElementById('helpButton').style.left = '12px';
+    document.getElementById('helpButton').style.bottom = 0;
+
+    document.getElementById('helpButton').style.marginBottom = '112px';
+    document.getElementById('helpButton').style.visibility = 'visible';
   }
 
 //  alert("screen.height = " + screen.height + "\nscreen.availHeight = " + screen.availHeight + "\nwindow.innerHeight = " + window.innerHeight + "\ndocument.body.clientHeight = " + document.body.clientHeight + "\nwindow.outerHeight = " + window.outerHeight + "\n\nscreen.width = " + screen.width + "\nscreen.availWidth = " + screen.availWidth + "\nwindow.innerWidth = " + window.innerWidth + "\ndocument.body.clientWidth = " + document.body.clientWidth + "\nwindow.outerWidth = " + window.outerWidth);
-
-
-
-//  bar.animate(batteryValue/100);  // Number from 0.0 to 1.0
 
   function displayDelayTime(theValue)   {
     let tempp = theValue / 18.258;
@@ -417,17 +427,6 @@
   }
 
   function doDing(dir, noPercent)   {
-//    return;
-// alert('ding! - ' + dir + ' - STD: ' + safeToDing);
-
-//    var dingFile = "";
-//    noPercent = noPercent || false;
-
-
-//      if (SPEAK_PERCENT && ! noPercent)   {
-//        var Percenter = setTimeout(talkPercent, 1250);
-//      }
-
       if (dir == "disconnected")   {
         playSound("disconnected", { volume: CURRENT_VOLUME });
       }
@@ -502,9 +501,32 @@
     CURRENT_VOLUME = v;
   }
 
+  function doDimScreen()   {
+    document.getElementById("container").style.filter = "brightness(40%)";
+    document.getElementById("chargingIndicator").style.filter = "brightness(40%)";
+    document.getElementById("settingsDiv").style.filter = "brightness(40%)";
+    document.getElementById("helpButton").style.filter = "brightness(40%)";
+    isDim = true;
+  }
 
+  function doBrightScreen()   {
+    document.getElementById("container").style.filter = "brightness(100%)";
+    document.getElementById("chargingIndicator").style.filter = "brightness(100%)";
+    document.getElementById("settingsDiv").style.filter = "brightness(100%)";
+    document.getElementById("helpButton").style.filter = "brightness(100%)";
+    isDim = false;
+    clearTimeout(dimTimer);
+    dimTimer = setTimeout(function() { doDimScreen(); }, DIM_DELAY);
+  }
 
-
+  function doHelp()   {
+    if (isDim)   {
+      doBrightScreen();
+    }
+    else   {
+      alert('HELP!');
+    }
+  }
 
 
 
