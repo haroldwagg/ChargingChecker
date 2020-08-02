@@ -87,6 +87,12 @@
   var CURRENT_VOLUME = 0.7;
   var SPEAK_PERCENT;
   var my_percent_dinger = "undefined";
+  var dingLooper;
+
+  var hasBeen100 = false;
+  var the99count = 0;
+  var prevReading = 0;
+
 
   var myColors = [
     "#ff0000",
@@ -312,14 +318,75 @@
 
     if (minuteDelay == 0)   {
       document.getElementById('delayMsg').innerHTML = "OFF&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-//          clearTimeout(dingLooper);
+      clearTimeout(dingLooper);
     }
     else   {
       document.getElementById('delayMsg').innerHTML = minuteDelay + " mins";
-//          DING_DELAY = minuteDelay * 60 * 1000;
-//          clearTimeout(dingLooper);
+      DING_DELAY = minuteDelay * 60 * 1000;
+      clearTimeout(dingLooper);
+      dingLooper = setTimeout(function() { processDings(); }, DING_DELAY);
 //          dingTimer("none");
     }
+  }
+
+  function processDings()   {
+    var currentReading = batteryValue;
+
+// alert(currentReading + " || " + prevReading);
+
+    if (currentReading == 100)   {
+      the99count++;
+      hasBeen100 = true;
+      doDing("fullcharge", true);
+    }
+    else if (currentReading > prevReading)   {
+      if (currentReading == 99)   {
+        the99count++;
+        if (the99count >= 4)   {
+          doDing("fullcharge", true);
+        }
+        else   {
+          doDing("upper", true);
+        }
+      }
+      else   {
+        the99count = 0;
+        doDing("upper", true);
+      }
+    }
+    else if (currentReading < prevReading)   {
+      if (currentReading < 99)   {
+        the99count = 0;
+        hasBeen100 = false;
+        doDing("downer", true);
+      }
+      else   {
+        the99count++;
+        if (the99count >= 4 || hasBeen100)   {
+          doDing("fullcharge", true);
+        }
+        else   {
+          doDing("downer", true);
+        }
+      }
+    }
+    else if (currentReading == prevReading)   {
+      if (currentReading == 99)   {
+        the99count++;
+        if (the99count >= 4 || hasBeen100)   {
+          doDing("fullcharge", true);
+        }
+        else   {
+          doDing("nochange", true);
+        }
+      }
+      else   {
+        doDing("nochange", true);
+      }
+    }
+
+    prevReading = currentReading;
+    dingLooper = setTimeout(function() { processDings(); }, DING_DELAY);
   }
 
   function doAReading()   {
@@ -354,8 +421,7 @@
 //    var dingFile = "";
 //    noPercent = noPercent || false;
 
-    if (safeToDing)   {
-      safeToDing = true;  // false;
+
 //      if (SPEAK_PERCENT && ! noPercent)   {
 //        var Percenter = setTimeout(talkPercent, 1250);
 //      }
@@ -373,10 +439,10 @@
         playSound("upper", { volume: CURRENT_VOLUME });
       }
       else if (dir == "nochange")   {
-        playSound("nochange", { volume: 0.9 });
+        playSound("nochange", { volume: CURRENT_VOLUME });
       }
       else if (dir == "fullcharge")   {
-        playSound("fullcharge", { volume: 0.9 });
+        playSound("fullcharge", { volume: CURRENT_VOLUME });
       }
 //  alert('(Before new Media) Dingfile is ' + dingFile);
 //      my_dinger = new Media(dingFile,
@@ -400,7 +466,7 @@
 //        my_dinger.release();
 //        safeToDing = true;
 //      }, 2000);
-    }
+
   }
 
   function manualDing(sel)   {
