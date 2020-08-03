@@ -310,7 +310,7 @@
     }
     else   {
       bar.text.style.fontSize = '7.5rem';
-      document.getElementById('helpButton').style.width = '4.2rem';
+      document.getElementById('helpButton').style.width = '3.5rem';
     }
 
 
@@ -538,7 +538,7 @@
     }
 
     snd.currentTime = batteryValue * 5;
-    snd.volume = (CURRENT_VOLUME >= 0.5) ? (CURRENT_VOLUME - 0.4) : CURRENT_VOLUME;
+    snd.volume = CURRENT_VOLUME * 0.35;
 
     audioTimer = setTimeout(function() { snd.pause(); snd.currentTime = 0; }, 4000);
     snd.play();
