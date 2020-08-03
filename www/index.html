@@ -91,7 +91,6 @@
 
   var DING_DELAY = 240000;
   var SPEAK_PERCENT = false;
-  var MEDIA_READY = false;
   var safeToDing = true;
   var failSafe = 0;
   var CURRENT_VOLUME = 0.7;
@@ -486,10 +485,6 @@
     SPEAK_PERCENT = document.getElementById('speakCheck').checked ? true : false;
   }
 
-  function setMediaFlag()   {
-    MEDIA_READY = true;
-  }
-
 
   function adjustVolume(v)   {
     CURRENT_VOLUME = v;
@@ -538,7 +533,7 @@
     }
 
     snd.currentTime = batteryValue * 5;
-    snd.volume = CURRENT_VOLUME * 0.35;
+    snd.volume = CURRENT_VOLUME * 0.30;
 
     audioTimer = setTimeout(function() { snd.pause(); snd.currentTime = 0; }, 4000);
     snd.play();
