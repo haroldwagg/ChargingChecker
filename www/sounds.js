@@ -16,6 +16,9 @@ var sounds = {
   },
   "fullcharge" : {
     url : this.root + CHARGED_DING
+  },
+  "charged" : {
+    url : this.root + CHARGED_FILE
   }
 };
 

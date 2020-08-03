@@ -23,9 +23,10 @@
       position: absolute;
       bottom: 0;
       width: 100%;
-      height: 90px;
+      height: 97px;
       background-color: #ccc;
-      padding-top: 15px;
+      padding-top: 7px;
+      padding-bottom: 10px;
       -webkit-transition: filter 2s ease;
     }
     #settingsP {
@@ -40,19 +41,19 @@
 <a onClick="doBrightScreen()"><div id="container"></div></a>
 <a onClick="doBrightScreen()"><div id="chargingIndicatorDiv" style="text-align: center;">
   <img src="" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px; -webkit-transition: filter 2s ease;" />
-  <a onClick="doHelp()"><img src="help.png" id="helpButton" style="visibility: hidden; text-decoration: none; -webkit-transition: filter 2s ease;" /></a>
+  <img src="help.png" id="helpButton" onClick="doHelp()" style="visibility: hidden; text-decoration: none; -webkit-transition: filter 2s ease;" />
 </div></a>
 
 <div id="settingsDiv">
   <a onClick="doBrightScreen()"><p id="settingsP">
     Chime every &nbsp;&nbsp;<input style="width: 38%" type="range" min="0" max="30" value="12" step="2" class="slider" id="delayRange" oninput="displayDelayTime(this.value)" />&nbsp;&nbsp; <span id="delayMsg">4 mins</span>
     <br />
-    <select id="manualChimes" onChange="manualDing(this)">
-      <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Chimes</option>
-      <option value="fullcharge">Play FULL CHARGE Chime</option>
-      <option value="upper">Play CHARGING Chime</option>
-      <option value="downer">Play NOT CHARGING Chime</option>
-      <option value="nochange">Play NO CHANGE Chime</option>
+    <select id="manualChimes" onChange="manualDing(this)" style="margin: 10px; font-size: 1em;">
+      <option selected disabled>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hear the Dings</option>
+      <option value="fullcharge">Play FULL CHARGE Ding</option>
+      <option value="upper">Play CHARGING Ding</option>
+      <option value="downer">Play NOT CHARGING Ding</option>
+      <option value="nochange">Play NO CHANGE Ding</option>
     </select>
     <br />
       Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.7" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
@@ -84,8 +85,9 @@
   var CHARGING_FILE = "audio/Charging.mp3";
   var DISCONNECTED_FILE = "audio/ChargerDisconnected.mp3";
   var CHARGED_FILE = "audio/Charged.mp3";
-  var percentDingFile = this.root + COUNTDOWN_FILE;
+  var percentDingFile = "";
   var my_dinger;
+  var snd;
 
   var DING_DELAY = 240000;
   var SPEAK_PERCENT = false;
@@ -96,7 +98,7 @@
   var SPEAK_PERCENT;
   var my_percent_dinger = "undefined";
   var dingLooper;
-  var dimTimer;
+  var dimTimer, audioTimer;
 
   var hasBeen100 = false;
   var the99count = 0;
@@ -294,7 +296,7 @@
       var containerDim = Math.floor(useableWidth);
       containerDim = Math.floor((containerDim / ratio) * 1.2);
       if (SIZE == "small")   {
-        document. getElementById('chargingIndicator').style.width = '7em';
+        document. getElementById('chargingIndicator').style.width = '6em';
       }
       var tMargin = (screen.height - 270 - containerDim) / 2;
 
@@ -308,7 +310,7 @@
     }
     else   {
       bar.text.style.fontSize = '7.5rem';
-      document.getElementById('helpButton').style.width = '6rem';
+      document.getElementById('helpButton').style.width = '4.2rem';
     }
 
 
@@ -321,7 +323,7 @@
     document.getElementById('helpButton').style.left = '12px';
     document.getElementById('helpButton').style.bottom = 0;
 
-    document.getElementById('helpButton').style.marginBottom = '112px';
+    document.getElementById('helpButton').style.marginBottom = '122px';
     document.getElementById('helpButton').style.visibility = 'visible';
   }
 
@@ -353,36 +355,36 @@
     if (currentReading == 100)   {
       the99count++;
       hasBeen100 = true;
-      doDing("fullcharge", true);
+      doDing("fullcharge", false);
     }
     else if (currentReading > prevReading)   {
       if (currentReading == 99)   {
         the99count++;
         if (the99count >= 4)   {
-          doDing("fullcharge", true);
+          doDing("fullcharge", false);
         }
         else   {
-          doDing("upper", true);
+          doDing("upper", false);
         }
       }
       else   {
         the99count = 0;
-        doDing("upper", true);
+        doDing("upper", false);
       }
     }
     else if (currentReading < prevReading)   {
       if (currentReading < 99)   {
         the99count = 0;
         hasBeen100 = false;
-        doDing("downer", true);
+        doDing("downer", false);
       }
       else   {
         the99count++;
         if (the99count >= 4 || hasBeen100)   {
-          doDing("fullcharge", true);
+          doDing("fullcharge", false);
         }
         else   {
-          doDing("downer", true);
+          doDing("downer", false);
         }
       }
     }
@@ -390,14 +392,14 @@
       if (currentReading == 99)   {
         the99count++;
         if (the99count >= 4 || hasBeen100)   {
-          doDing("fullcharge", true);
+          doDing("fullcharge", false);
         }
         else   {
-          doDing("nochange", true);
+          doDing("nochange", false);
         }
       }
       else   {
-        doDing("nochange", true);
+        doDing("nochange", false);
       }
     }
 
@@ -406,6 +408,7 @@
   }
 
   function doAReading()   {
+    doBrightScreen();
     navigator.getBattery().then(function(battery) {
       batteryValue = Math.round(battery.level * 100);
       PLUGGED_STATUS = battery.charging;
@@ -431,47 +434,33 @@
   }
 
   function doDing(dir, noPercent)   {
-      if (dir == "disconnected")   {
-        playSound("disconnected", { volume: CURRENT_VOLUME });
-      }
-      else if (dir == "charging")   {
-        playSound("charging", { volume: CURRENT_VOLUME });
-      }
-      else if (dir == "downer")   {
-        playSound("downer", { volume: CURRENT_VOLUME });
-      }
-      else if (dir == "upper")   {
-        playSound("upper", { volume: CURRENT_VOLUME });
-      }
-      else if (dir == "nochange")   {
-        playSound("nochange", { volume: CURRENT_VOLUME });
-      }
-      else if (dir == "fullcharge")   {
-        playSound("fullcharge", { volume: CURRENT_VOLUME });
-      }
-//  alert('(Before new Media) Dingfile is ' + dingFile);
-//      my_dinger = new Media(dingFile,
-//        function(){ alert('success'); },
-//        function (err) { alert('ERROR: :Audio Error: ' + JSON.stringify(err)); }
-//          ignoreError(),
-//          ignoreError()
-//      );
+    var noPercent = noPercent || false;
 
-// success callback
-// function () { alert('success'); },
-// error callback
-// function (err) { alert('ERROR: :Audio Error: ' + JSON.stringify(err)); }
+    if (SPEAK_PERCENT && ! noPercent)   {
+      var Percenter = setTimeout(talkPercent, 1250);
+    }
 
-//  alert('here3 - ' + JSON.stringify(my_dinger));
-//      my_dinger.play({ playAudioWhenScreenIsLocked : true });
-//      my_dinger.setVolume(CURRENT_VOLUME);
-//  alert('setTimeout');
-//      var Timeouter = setTimeout(function()   {
-//        my_dinger.stop();
-//        my_dinger.release();
-//        safeToDing = true;
-//      }, 2000);
-
+    if (dir == "disconnected")   {
+      playSound("disconnected", { volume: CURRENT_VOLUME });
+    }
+    else if (dir == "charging")   {
+      playSound("charging", { volume: CURRENT_VOLUME });
+    }
+    else if (dir == "downer")   {
+      playSound("downer", { volume: CURRENT_VOLUME });
+    }
+    else if (dir == "upper")   {
+      playSound("upper", { volume: CURRENT_VOLUME });
+    }
+    else if (dir == "nochange")   {
+      playSound("nochange", { volume: CURRENT_VOLUME });
+    }
+    else if (dir == "fullcharge")   {
+      playSound("fullcharge", { volume: CURRENT_VOLUME });
+    }
+    else if (dir == "charged")   {
+      playSound("charged", { volume: CURRENT_VOLUME });
+    }
   }
 
   function manualDing(sel)   {
@@ -479,6 +468,7 @@
   }
 
   function onChargeChg()   {
+    doBrightScreen();
     navigator.getBattery().then(function(battery) {
       PLUGGED_STATUS = battery.charging;
       if (battery.charging)   {
@@ -510,10 +500,10 @@
     document.getElementById("chargingIndicator").style.WebkitTransition = "filter 2s ease";
     document.getElementById("settingsDiv").style.WebkitTransition = "filter 2s ease";
     document.getElementById("helpButton").style.WebkitTransition = "filter 2s ease";
-    document.getElementById("container").style.filter = "brightness(40%)";
-    document.getElementById("chargingIndicator").style.filter = "brightness(40%)";
-    document.getElementById("settingsDiv").style.filter = "brightness(40%)";
-    document.getElementById("helpButton").style.filter = "brightness(40%)";
+    document.getElementById("container").style.filter = "brightness(60%)";
+    document.getElementById("chargingIndicator").style.filter = "brightness(30%)";
+    document.getElementById("settingsDiv").style.filter = "brightness(30%)";
+    document.getElementById("helpButton").style.filter = "brightness(30%)";
     isDim = true;
   }
 
@@ -532,16 +522,27 @@
   }
 
   function doHelp()   {
-    if (isDim)   {
-      doBrightScreen();
-    }
-    else   {
-      alert('HELP!');
-    }
+    doBrightScreen();
+    alert('HELP!');
   }
 
+  function talkPercent()   {
+    if (batteryValue == 100 || hasBeen100)   {
+      playSound("charged", { volume: CURRENT_VOLUME });
+      return;
+    }
 
+    if (percentDingFile == "")   {
+      percentDingFile = this.root + COUNTDOWN_FILE;
+      snd = new Audio(percentDingFile);
+    }
 
+    snd.currentTime = batteryValue * 5;
+    snd.volume = (CURRENT_VOLUME >= 0.5) ? (CURRENT_VOLUME - 0.4) : CURRENT_VOLUME;
+
+    audioTimer = setTimeout(function() { snd.pause(); snd.currentTime = 0; }, 4000);
+    snd.play();
+  }
 
 </script>
 
@@ -550,10 +551,6 @@
 <script type="text/javascript" src="cordova.js"></script>
  <script src="sounds.js" type="text/javascript"></script>
 
-
-<!--
-<a href='https://pngtree.com/so/battery-icons'>battery-icons png from pngtree.com</a>
--->
 
 </body>
 </html>
