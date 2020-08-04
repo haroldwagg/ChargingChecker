@@ -472,6 +472,7 @@
 
   function manualDing(sel)   {
     doDing(sel.options[sel.selectedIndex].value, true);
+    document.getElementById("manualChimes").options[0].selected = true;
   }
 
   function onChargeChg()   {
