@@ -32,15 +32,20 @@
     #settingsP {
       text-align: center;
     }
+    #speakCheck {
+      width: 25px;
+      height: 25px;
+    }
   </style>
 
 </head>
 <body background-color="#333333">
 
+<div id="logoDiv" onClick ="doBrightScreen()" style="position: absolute; top: 0; left: 0"><img id="logoPic" src="logo2.png" onClick ="doBrightScreen()" style="visibility: hidden;"" /></div>
 
-<a onClick="doBrightScreen()"><div id="container"></div></a>
+<a onClick="doBrightScreen()"><div id="container"onClick="doBrightScreen()"></div></a>
 <a onClick="doBrightScreen()"><div id="chargingIndicatorDiv" style="text-align: center;">
-  <img src="" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px; -webkit-transition: filter 2s ease;" />
+  <img src="" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px; -webkit-transition: filter 2s ease; border-radius: 8px;" />
   <img src="help.png" id="helpButton" onClick="doHelp()" style="visibility: hidden; text-decoration: none; -webkit-transition: filter 2s ease;" />
 </div></a>
 
@@ -288,6 +293,7 @@
       if (SIZE == "small")   {
         document. getElementById('chargingIndicator').style.width = '4em';
         document. getElementById('chargingIndicator').style.marginTop = '10px';
+        document. getElementById('logoPic').style.height = "5em";
       }
     }
     else   {  // portrait
@@ -296,6 +302,7 @@
       containerDim = Math.floor((containerDim / ratio) * 1.2);
       if (SIZE == "small")   {
         document. getElementById('chargingIndicator').style.width = '6em';
+        document. getElementById('logoPic').style.height ="6em"
       }
       var tMargin = (screen.height - 270 - containerDim) / 2;
 
@@ -324,6 +331,7 @@
 
     document.getElementById('helpButton').style.marginBottom = '122px';
     document.getElementById('helpButton').style.visibility = 'visible';
+    document.getElementById('logoPic').style.visibility = 'visible';
   }
 
 //  alert("screen.height = " + screen.height + "\nscreen.availHeight = " + screen.availHeight + "\nwindow.innerHeight = " + window.innerHeight + "\ndocument.body.clientHeight = " + document.body.clientHeight + "\nwindow.outerHeight = " + window.outerHeight + "\n\nscreen.width = " + screen.width + "\nscreen.availWidth = " + screen.availWidth + "\nwindow.innerWidth = " + window.innerWidth + "\ndocument.body.clientWidth = " + document.body.clientWidth + "\nwindow.outerWidth = " + window.outerWidth);
