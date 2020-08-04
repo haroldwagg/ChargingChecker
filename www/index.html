@@ -47,6 +47,8 @@
 <a onClick="doBrightScreen()"><div id="chargingIndicatorDiv" style="text-align: center;">
   <img src="" id="chargingIndicator" style="visibility: hidden; width: 7em; margin-top: 20px; -webkit-transition: filter 2s ease; border-radius: 8px;" />
   <img src="help.png" id="helpButton" onClick="doHelp()" style="visibility: hidden; text-decoration: none; -webkit-transition: filter 2s ease;" />
+  <img src="x.png" id="xButton" onClick="confirmExit()" style="visibility: hidden; text-decoration: none; -webkit-transition: filter 2s ease;" />
+
 </div></a>
 
 <div id="settingsDiv">
@@ -313,10 +315,12 @@
     if (containerDim < 500)   {
       bar.text.style.fontSize = '4rem';
       document.getElementById('helpButton').style.width = '3rem';
+      document.getElementById('xButton').style.width = '3rem';
     }
     else   {
       bar.text.style.fontSize = '7.5rem';
       document.getElementById('helpButton').style.width = '3.5rem';
+      document.getElementById('xButton').style.width = '3.5rem';
     }
 
 
@@ -328,9 +332,16 @@
     document.getElementById('helpButton').style.position = 'absolute';
     document.getElementById('helpButton').style.left = '12px';
     document.getElementById('helpButton').style.bottom = 0;
-
     document.getElementById('helpButton').style.marginBottom = '122px';
+
+    document.getElementById('xButton').style.position = 'absolute';
+    document.getElementById('xButton').style.right = '12px';
+    document.getElementById('xButton').style.bottom = 0;
+    document.getElementById('xButton').style.marginBottom = '122px';
+
+
     document.getElementById('helpButton').style.visibility = 'visible';
+    document.getElementById('xButton').style.visibility = 'visible';
     document.getElementById('logoPic').style.visibility = 'visible';
   }
 
@@ -350,7 +361,6 @@
       DING_DELAY = minuteDelay * 60 * 1000;
       clearTimeout(dingLooper);
       dingLooper = setTimeout(function() { processDings(); }, DING_DELAY);
-//          dingTimer("none");
     }
   }
 
@@ -547,6 +557,30 @@
     audioTimer = setTimeout(function() { snd.pause(); snd.currentTime = 0; }, 4000);
     snd.play();
   }
+
+  function doExit()   {
+    clearTimeout(dimTimer);
+    clearTimeout(dingLooper);
+    window.plugins.insomnia.allowSleepAgain();
+    navigator.app.exitApp();
+  }
+
+  function confirmExit()   {
+    var q = confirm("You are about to exit The Dinger. Is this what you want to do?");
+    if (q == true)   {
+      doExit();
+    }
+    else   {
+      return;
+    }
+  }
+
+  document.addEventListener("backbutton", function(e) {
+    e.preventDefault();
+    confirmExit();
+  }, false );
+
+
 
 </script>
 
