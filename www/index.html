@@ -570,7 +570,7 @@
   }
 
   function confirmExit()   {
-    var q = confirm("You are about to exit The Dinger. Is this what you want to do?");
+    var q = confirm("You are about to exit The Dinger. \nIs this what you want to do?");
     if (q == true)   {
       doExit();
     }
@@ -581,7 +581,7 @@
 
   document.addEventListener("backbutton", function (e) {               // Disable Back Button
       e.preventDefault();
-      var q = confirm("You are about to exit The Dinger. Is this what you want to do?");
+      var q = confirm("You are about to exit The Dinger. \nIs this what you want to do?");
       if (q == true)   {
         doExit();
       }
