@@ -17,7 +17,7 @@
       -webkit-transition: filter 2s ease;
     }
     body {
-      background-color: #303030;
+      background-color: #000;
     }
     #settingsDiv {
       position: absolute;
@@ -39,9 +39,9 @@
   </style>
 
 </head>
-<body background-color="#333333">
+<body background-color="#000">
 
-<div id="logoDiv" onClick ="doBrightScreen()" style="position: absolute; top: 0; left: 0"><img id="logoPic" src="logo2.png" onClick ="doBrightScreen()" style="visibility: hidden;"" /></div>
+<div id="logoDiv" onClick ="doBrightScreen()" style="position: absolute; top: 0; left: 0"><img id="logoPic" src="logo3.png" onClick ="doBrightScreen()" style="visibility: hidden;"" /></div>
 
 <a onClick="doBrightScreen()"><div id="container"onClick="doBrightScreen()"></div></a>
 <a onClick="doBrightScreen()"><div id="chargingIndicatorDiv" style="text-align: center;">
@@ -70,7 +70,7 @@
 
 <script>
 
-  var DIM_DELAY = 180000;
+  var DIM_DELAY = 9000;   // 180000;
   var SIZE;
   var ORIENT;
   var ratio = window.devicePixelRatio || 1;
@@ -514,10 +514,12 @@
     document.getElementById("chargingIndicator").style.WebkitTransition = "filter 2s ease";
     document.getElementById("settingsDiv").style.WebkitTransition = "filter 2s ease";
     document.getElementById("helpButton").style.WebkitTransition = "filter 2s ease";
-    document.getElementById("container").style.filter = "brightness(60%)";
-    document.getElementById("chargingIndicator").style.filter = "brightness(30%)";
-    document.getElementById("settingsDiv").style.filter = "brightness(30%)";
-    document.getElementById("helpButton").style.filter = "brightness(30%)";
+    document.getElementById("xButton").style.WebkitTransition = "filter 2s ease";
+    document.getElementById("container").style.filter = "brightness(20%)";
+    document.getElementById("chargingIndicator").style.filter = "brightness(20%)";
+    document.getElementById("settingsDiv").style.filter = "brightness(0%)";
+    document.getElementById("helpButton").style.filter = "brightness(0%)";
+    document.getElementById("xButton").style.filter = "brightness(0%)";
     isDim = true;
   }
 
@@ -526,10 +528,12 @@
     document.getElementById("chargingIndicator").style.WebkitTransition = "none";
     document.getElementById("settingsDiv").style.WebkitTransition = "none";
     document.getElementById("helpButton").style.WebkitTransition = "none";
+    document.getElementById("xButton").style.WebkitTransition = "none";
     document.getElementById("container").style.filter = "brightness(100%)";
     document.getElementById("chargingIndicator").style.filter = "brightness(100%)";
     document.getElementById("settingsDiv").style.filter = "brightness(100%)";
     document.getElementById("helpButton").style.filter = "brightness(100%)";
+    document.getElementById("xButton").style.filter = "brightness(100%)";
     isDim = false;
     clearTimeout(dimTimer);
     dimTimer = setTimeout(function() { doDimScreen(); }, DIM_DELAY);
@@ -575,10 +579,17 @@
     }
   }
 
-  document.addEventListener("backbutton", function(e) {
-    e.preventDefault();
-    confirmExit();
-  }, false );
+  document.addEventListener("backbutton", function (e) {               // Disable Back Button
+      e.preventDefault();
+      var q = confirm("You are about to exit The Dinger. Is this what you want to do?");
+      if (q == true)   {
+        doExit();
+      }
+      else   {
+        ;
+      }
+    },
+  false );
 
 
 
