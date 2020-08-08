@@ -63,7 +63,7 @@
       <option value="nochange">Play NO CHANGE Ding</option>
     </select>
     <br />
-      Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.7" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" /> Speak %
+      Volume: &nbsp;&nbsp;<input type="range" min="0" max="1.0" value="0.7" step="0.1" class="slider" id="volumeRange" oninput="adjustVolume(this.value)" style="width: 40%;" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Speak %&nbsp;<input type="checkbox" id="speakCheck" onClick="doSpeakPercent()" />
   </p></a>
 
 </div>
@@ -215,8 +215,8 @@
     "#0000ee"
   ];
 
-//  document.addEventListener("deviceready", starter, false);
-  window.onload = setTimeout(function() {starter();}, 1000);
+  document.addEventListener("deviceready", starter, false);
+//  window.onload = setTimeout(function() {starter();}, 1000);
   window.addEventListener("orientationchange", onOChange);
 
   function starter()   {
@@ -540,8 +540,18 @@
   }
 
   function doHelp()   {
-    doBrightScreen();
-    alert('HELP!');
+    navigator.notification.alert(
+      "If your phone and its charger are not always the best of friends, then The Dingster is for you. " +
+        " This app will monitor your device while it charges and let you know whether everything is OK or whether there may be a problem with which you need to deal.\n\n" +
+        " The Dingster will check on your charging and let you know the status with an unobtrusive ding. There are different dings for \"Charging\", \"Discharging\" and \"No Change\". " +
+        " So even if you're not looking at your phone, you'll know it's still charging -- or not. If you hear the \"Discharging\" ding, it's time to make sure the charger is still plugged in, or time to wiggle the charging cable, or whatever else you might have to do to get things charging again.\n\n" +
+        " You can set The Dingster to ding as often as you like, however if you make it too frequently, you may get a lot of \"No Change\" dings. Usually once every 8 to 10 minutes works best for most devices.\n\n" +
+        " You can either leave The Dingster up and watch your device charge, or by tapping your [BACK] or [HOME] button, you can use your device normally while The Dingster still keeps track of the battery.\n\n" +
+        " THe Dingster will keep on dinging until you exit the app using the red \"X\" on the lower right of the app.\n\nThank you for choosing The Dingster.\numikeapps@outlook.com\n\n",
+      "",
+      "Welcome to The Dingster",
+      "DISMISS"
+    );
   }
 
   function talkPercent()   {
