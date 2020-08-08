@@ -232,6 +232,7 @@
       resume: true,
       hidden: false
     });
+    cordova.plugins.backgroundMode.overrideBackButton();
 
     setTimeout(function() { processDings(); }, 5500);
     dimTimer = setTimeout(function() { doDimScreen(); }, DIM_DELAY);
@@ -607,17 +608,17 @@
     }
   }
 
-  document.addEventListener("backbutton", function (e) {               // Disable Back Button
-      e.preventDefault();
-      var q = confirm("You are about to exit The Dingster. \nIs this what you want to do?");
-      if (q == true)   {
-        doExit();
-      }
-      else   {
-        ;
-      }
-    },
-  false );
+//  document.addEventListener("backbutton", function (e) {               // Disable Back Button
+//      e.preventDefault();
+//      var q = confirm("You are about to exit The Dingster. \nIs this what you want to do?");
+//      if (q == true)   {
+//        doExit();
+//      }
+//      else   {
+//        ;
+//      }
+//    },
+//  false );
 
   function onOChange2()  {
   var containerDim;
