@@ -233,6 +233,7 @@
       hidden: false
     });
     cordova.plugins.backgroundMode.overrideBackButton();
+    cordova.plugins.backgroundMode.configure({ text: "[Tap HERE to Restore]", resume: true  });
 
     setTimeout(function() { processDings(); }, 5500);
     dimTimer = setTimeout(function() { doDimScreen(); }, DIM_DELAY);
